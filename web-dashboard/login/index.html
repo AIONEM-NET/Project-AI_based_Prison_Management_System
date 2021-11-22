@@ -1,25 +1,25 @@
-<?php
+<!--<?php-->
 
-include "../config.php";
+<!--include "../config.php";-->
 
 
-if(!empty($response["message"])) {
-    echo
-    '<script>
-        var username = "police";
-        localStorage.setItem("userUID", username);
-        localStorage.setItem("userName", username);
-        localStorage.setItem("userAccount", username);
-        localStorage.setItem("userAccount1", username);
-</script>';
-    echo '<script> alert("Artificial Intelligence based Prison Management System Dashboard:\n\n---->  '. $response["message"] .'")</script>';
-}
+<!--if(!empty($response["message"])) {-->
+<!--    echo-->
+<!--    '<script>-->
+<!--        var username = "police";-->
+<!--        localStorage.setItem("userUID", username);-->
+<!--        localStorage.setItem("userName", username);-->
+<!--        localStorage.setItem("userAccount", username);-->
+<!--        localStorage.setItem("userAccount1", username);-->
+<!--</script>';-->
+<!--    echo '<script> alert("Artificial Intelligence based Prison Management System Dashboard:\n\n&#45;&#45;&ndash;&gt;  '. $response["message"] .'")</script>';-->
+<!--}-->
 
-if($response["success"] === true) {
-    echo '<script> window.location.replace("../dashboard/"); </script>';
-}
+<!--if($response["success"] === true) {-->
+<!--    echo '<script> window.location.replace("../dashboard/"); </script>';-->
+<!--}-->
 
-?>
+<!--?>-->
 
 
 
@@ -52,7 +52,7 @@ if($response["success"] === true) {
     <div class="" style="height: 100%; width: 100%; background-image: url('images/bg1.png'); background-repeat: no-repeat; background-position: center; background-size: cover;">
         <div class="text-center" style="height: 100%; width: 100%; background-color: rgba(0,81,133,0.49)">
             <div class="container-login100" style="background: rgba(0,81,133,0.49)">
-                <div class="wrap-login100" style="background-color: rgba(255,255,255,0.56);">
+                <div class="wrap-login100" style="background-color: rgba(255,255,255,0.82);">
 					<span class="login100-form-title" style="color: #0445a9; text-transform: uppercase; font-size: 35px; margin-top: -100px;">
                         <u>Dashboard</u>
                         <br>
@@ -69,7 +69,8 @@ if($response["success"] === true) {
 					</span>
 
                     <div class="wrap-input100 validate-input" data-validate = "Username is required">
-                        <input class="input100" type="text" name="username" placeholder="Username" value="<?php echo $username; ?>">
+<!--                        <input class="input100" type="text" name="username" placeholder="Username" value="<?php echo $username; ?>">-->
+                        <input class="input100" type="text" name="username" placeholder="Username" value="">
                         <span class="focus-input100"></span>
                         <span class="symbol-input100">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
@@ -92,7 +93,7 @@ if($response["success"] === true) {
 
                     <div class="text-center p-t-12">
 						<span class="txt1" style="color: #FF0000; font-size: 18px;">
-							<?php echo $response["message"]; ?>
+<!--							<?php echo $response["message"]; ?>-->
 						</span>
                     </div>
 
