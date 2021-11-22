@@ -64,3 +64,6 @@ node_modules/
 
 # dotenv environment variables file
 .env
+
+face-recognition/.idea
+web-dashboard/.idea
