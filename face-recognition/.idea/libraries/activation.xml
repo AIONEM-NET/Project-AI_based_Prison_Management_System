@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="activation">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/activation.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/colt.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jai_imageio-1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javax.mail.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-2411.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/org.apache.commons.io.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/opencv-2411.jar!/" />
+    </SOURCES>
+  </library>
+</component>

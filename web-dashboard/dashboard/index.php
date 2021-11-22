@@ -1,0 +1,459 @@
+<?php
+
+include "../config.php";
+
+
+?>
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title id="title">Artificial Intelligence based Prison Management System</title>
+    <link rel="stylesheet" href="../vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="../vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.0.1/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="shortcut icon" href="../images/icon_website.png" />
+
+    <style>
+
+        .bg-primary {
+            color: #06579a !important;
+            background-color: #FFFFFF !important;
+        }
+
+        .bg-primary:hover {
+            color: #06579a !important;
+            background-color: #FFFFFF !important;
+        }
+
+        .bg-primary .menu-icon {
+            color: #06579a !important;
+            background-color: #FFFFFF !important;
+        }
+
+        .status-- {
+            color: #FFFFFF;
+            font-weight: bold;
+            padding: 10px;
+            background-color: #918d8e;
+            border-radius: 10px;
+        }
+
+        .status-200 {
+            color: #FFFFFF;
+            font-weight: bold;
+            padding: 10px;
+            background-color: rgba(12, 132, 70, 0.87);
+            border-radius: 10px;
+        }
+
+        .status-500 {
+            color: #FFFFFF;
+            font-weight: bold;
+            padding: 10px;
+            background-color: #fc7b00;
+            border-radius: 10px;
+        }
+
+        .status-505 {
+            color: #FFFFFF;
+            font-weight: bold;
+            padding: 10px;
+            background-color: #e30719;
+            border-radius: 10px;
+        }
+
+    </style>
+
+</head>
+<body>
+<div class="container-scroller d-flex">
+    <nav class="sidebar sidebar-offcanvas" id="sidebar" style="background: #06579a;">
+        <ul class="nav" style="position: fixed; margin-top: -0px;">
+            <li class="nav-item sidebar-category hidden">
+                <p class="hidden">My ACCOUNT:
+                    <span class="text-center" id="accountType" style="font-weight: bold; color: #FFFFFF; background-color: #FFFFFF00; font-size: 22px;"></span>
+                </p>
+                <a class="hidden" href="#Logout" style="color: #06579a;" onclick="logout();" >- Logout</a>
+            </li>
+            <li class="nav-item sidebar-category hidden">
+                <p></p>
+                <span></span>
+            </li>
+            <li class="nav-item bg-gradient-warning" style="background: rgba(3,178,88,0.77);">
+                <a class="nav-link" href="">
+                    <i class="mdi mdi-view-quilt menu-icon"></i>
+                    <span class="menu-title">AIPMS - DASHBOARD</span>
+                </a>
+            </li>
+            <li class="nav-item bg-gradient-secondary hidden">
+                <a class="nav-link" href="../dashboard/#Graph">
+                    <i class="mdi mdi-chart-pie menu-icon"></i>
+                    <span class="menu-title">Graph</span>
+                </a>
+            </li>
+            <li class="nav-item bg-gradient-secondary hidden">
+                <a class="nav-link" href="../dashboard/#Table">
+                    <i class="mdi mdi-grid-large menu-icon"></i>
+                    <span class="menu-title">Table</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="../dashboard/#Table">
+                    <button class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px;">
+                        <i class="mdi mdi-grid-large menu-icon"></i>
+                        Records
+                    </button>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="../dashboard/#Graph">
+                    <button class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px;">
+                        <i class="mdi mdi-chart-pie menu-icon"></i>
+                        Statistics
+                    </button>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="../face-database/">
+                    <button class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px;">
+                        <i class="mdi mdi-face menu-icon"></i>
+                        Face Database
+                    </button>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="../screen-projector/">
+                    <button class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px;">
+                        <i class="mdi mdi-projector-screen menu-icon"></i>
+                        Screen Projector
+                    </button>
+                </a>
+            </li>
+            <li class="nav-item hidden">
+                <a class="nav-link" href="#Alert" onclick='getData("Alert", "", 0, 0)'>
+                    <button class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px;">
+                        <i class="mdi mdi-bell menu-icon"></i>
+                        Records
+                    </button>
+                </a>
+            </li>
+            <li class="nav-item hidden">
+                <a class="nav-link" href="#Error" onclick='getData("Error", "", 0, 0)'>
+                    <button class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px;">
+                        <i class="mdi mdi-alert menu-icon"></i>
+                        Errors
+                    </button>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#Reset" onclick='resetData();'>
+                    <button class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px;">
+                        <i class="mdi mdi-notification-clear-all menu-icon"></i>
+                        Reset
+                    </button>
+                </a>
+            </li>
+            <li>
+                <br>
+                <label for="timeFrom" style="min-width: 40px; color: #FFFFFF; font-weight: bold; margin-left: 10px;">FROM:</label>
+                <input id="timeFrom" type="date"/>
+            </li>
+            <li>
+                <label for="timeTo" style="min-width: 40px; color: #FFFFFF; font-weight: bold; margin-left: 10px;">TO:</label>
+                <input id="timeTo" type="date"/>
+            </li>
+
+            <li class="nav-item text-center" style="margin-top: 20px; display: none;">
+
+                <label for="timeTo" style="min-width: 40px; color: #FFFFFF; font-weight: bold; margin-left: 10px;">ERROR CODES:</label>
+<br>
+                <span class="acc-isAdmin">
+
+              <a class="nav-link1" href="#200" onclick='getData("", "200")'>
+                <button class="btn bg-danger btn-sm menu-title text-center" style="min-width: 50px; background-color: #FFFFFF !important; color: #06579a; font-weight: bold;">200</button>
+              </a>
+              </span>
+                    <span class="acc-isSecurity">
+              <a class="nav-link1" href="#400" onclick='getData("", "400")'>
+                <button class="btn bg-danger btn-sm menu-title text-center" style="min-width: 50px; background-color: #FFFFFF !important; color: #06579a; font-weight: bold;">400</button>
+              </a>
+              </span>
+                    <span class="acc-isAuth">
+              <a class="nav-link1" href="#401" onclick='getData("", "401")'>
+                <button class="btn bg-danger btn-sm menu-title text-center" style="min-width: 50px; background-color: #FFFFFF !important; color: #06579a; font-weight: bold;">401</button>
+              </a>
+          </span>
+            </li>
+            <li class="nav-item text-center" style="margin-top: 10px; display: none;">
+          <span class="acc-isAdmin">
+              <a class="nav-link1" href="#500" onclick='getData("", "500")'>
+                <button class="btn bg-danger btn-sm menu-title text-center" style="min-width: 50px; background-color: #FFFFFF !important; color: #06579a; font-weight: bold;">500</button>
+              </a>
+              </span>
+                    <span class="acc-isSecurity">
+              <a class="nav-link1" href="#501" onclick='getData("", "501")'>
+                <button class="btn bg-danger btn-sm menu-title text-center" style="min-width: 50px; background-color: #FFFFFF !important; color: #06579a; font-weight: bold;">501</button>
+              </a>
+              </span>
+                    <span class="acc-isAuth">
+              <a class="nav-link1" href="#502" onclick='getData("", "502")'>
+                <button class="btn bg-danger btn-sm menu-title text-center" style="min-width: 50px; background-color: #FFFFFF !important; color: #06579a; font-weight: bold;">502</button>
+              </a>
+          </span>
+            </li>
+            <li class="nav-item text-center" style="margin-top: 10px; display: none;">
+          <span class="acc-isAdmin">
+              <a class="nav-link1" href="#503" onclick='getData("", "503")'>
+                <button class="btn bg-danger btn-sm menu-title text-center" style="min-width: 50px; background-color: #FFFFFF !important; color: #06579a; font-weight: bold;">503</button>
+              </a>
+              </span>
+                <span class="acc-isSecurity">
+              <a class="nav-link1" href="#504" onclick='getData("", "504")'>
+                <button class="btn bg-danger btn-sm menu-title text-center" style="min-width: 50px; background-color: #FFFFFF !important; color: #06579a; font-weight: bold;">504</button>
+              </a>
+              </span>
+                <span class="acc-isAuth">
+              <a class="nav-link1" href="#505" onclick='getData("", "505")'>
+                <button class="btn bg-danger btn-sm menu-title text-center" style="min-width: 50px; background-color: #FFFFFF !important; color: #06579a; font-weight: bold;">505</button>
+              </a>
+          </span>
+            </li>
+            <div class="text-center hidden">
+                <img src="../images/icon_website.png" style="width: 120px; border-radius: 50%; border: 2px solid #06579a; padding: 10px;"/>
+            </div>
+            <li class="nav-item" style="margin-top: 20px;">
+                <a class="nav-link" href="#All" onclick='getData("")'>
+                    <button onclick="logout();" class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px;">
+                        <i class="mdi mdi-logout menu-icon"></i>
+                        Logout
+                    </button>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <div class="container-fluid page-body-wrapper">
+
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="row" id="Table">
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card" style="min-height: 450px;">
+                            <div class="card-body">
+                                <h2 class="card-title1 text-center" style="font-size: 30px; padding-top: 20px; padding-bottom: 20px; background-color: #06579a; color: #FFFFFF;"">RECORDS - AI Prison Management System</h2>
+                                <div class="table-responsive" id="TableCard" style="min-height: 500px;">
+                                    <table id="dataTable" class="table table-striped display nowrap" style="width:100%">
+                                        <thead>
+                                        <tr>
+                                            <th class="text-center font-weight-bold">
+                                                NO
+                                            </th>
+                                            <th class="text-center font-weight-bold">
+                                                WEBSITE
+                                            </th>
+                                            <th class="text-center font-weight-bold">
+                                                CODE
+                                            </th>
+                                            <th class="text-center font-weight-bold">
+                                                AUTHENTICATION
+                                            </th>
+                                            <th class="text-center font-weight-bold">
+                                                ALERT
+                                            </th>
+                                            <th class="text-center font-weight-bold">
+                                                DURATION
+                                            </th>
+                                            <th class="text-center font-weight-bold">
+                                                LAST DATE
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="tbody">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-xl-12 grid-margin stretch-card">
+                        <div class="row w-100 flex-grow">
+                            <div class="col-md-12 grid-margin stretch-card">
+                                <div class="card" id="Graph">
+                                    <div class="card-body">
+                                        <h1 class="card-title text-center" style="font-size: 30px; padding-top: 20px; padding-bottom: 20px; background-color: #06579a; color: #FFFFFF;"> <span class="hidden" id="accountName" style="padding: 3px; border-radius: 10px; border: solid 1px #000000;"></span> STATISTICS - AI Prison Management System</h1>
+                                        <p class="text-muted"></p>
+                                        <br>
+                                        <div id="GraphCard">
+                                        <canvas id="audience-chart" style="min-height: 450px;"></canvas>
+                                        <div class="row mb-3 text-center">
+                                            <div class="col-md-12">
+                                                <div class="d-flex justify-content-between traffic-status text-center">
+                                                    <div class="item text-center" style="min-width: 70px; border: 2px #0c8446 solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
+                                                        <h4 class="mb-">All</h4>
+                                                        <h3 class="font-weight-bold mb-0 text-center" id="countAll">-</h3>
+                                                        <div class="color-border text-center" style="background-color: #0c8446; width: 100%;"></div>
+                                                    </div>
+                                                    <div class="item text-center" style="min-width: 70px; border: 2px #ec6c11 solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
+                                                        <h4 class="mb-">Alert</h4>
+                                                        <h3 class="font-weight-bold mb-0 text-center" id="countWarning">-</h3>
+                                                        <div class="color-border text-center" style="background-color: #ec6c11; width: 100%;"></div>
+                                                    </div>
+                                                    <div class="item text-center" style="min-width: 70px; border: 2px #b6047e solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
+                                                        <h4 class="mb-">Error</h4>
+                                                        <h3 class="font-weight-bold mb-0 text-center" id="countDanger">-</h3>
+                                                        <div class="color-border text-center" style="background-color: #b6047e; width: 100%;"></div>
+                                                    </div>
+                                                    <div class="item text-center" style="min-width: 70px; border: 2px #e0d12e solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
+                                                        <h4 class="mb-">Admin</h4>
+                                                        <h3 class="font-weight-bold mb-0 text-center" id="countIsAdmin">-</h3>
+                                                        <div class="color-border text-center" style="background-color: #e0d12e; width: 100%;"></div>
+                                                    </div>
+                                                    <div class="item text-center" style="min-width: 70px; border: 2px #b2000e solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
+                                                        <h4 class="mb-">Security</h4>
+                                                        <h3 class="font-weight-bold mb-0 text-center" id="countIsSecurity">-</h3>
+                                                        <div class="color-border text-center" style="background-color: #b2000e; width: 100%;"></div>
+                                                    </div>
+                                                    <div class="item text-center" style="min-width: 70px; border: 2px #1767d2 solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
+                                                        <h4 class="mb-">Authentication</h4>
+                                                        <h3 class="font-weight-bold mb-0 text-center" id="countIsAuth">-</h3>
+                                                        <div class="color-border text-center" style="background-color: #1767d2; width: 100%;"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row hidden">
+                    <div class="col-12 col-xl-12 grid-margin stretch-card">
+                        <div class="row w-100 flex-grow">
+                            <div class="col-md-12 grid-margin stretch-card">
+                                <div class="card" id="FaceDatabase" style="min-height: 500px;">
+                                    <div class="card-body">
+                                        <h1 class="card-title text-center" style="font-size: 30px; padding-top: 20px; padding-bottom: 20px; background-color: #06579a; color: #FFFFFF;"> <span class="hidden" id="accountName" style="padding: 3px; border-radius: 10px; border: solid 1px #000000;"></span> FACE DATABASE - AI Prison Management System</h1>
+                                        <p class="text-muted"></p>
+                                        <style>
+                                            .img-face {
+                                                border: 2px #00bf78 solid;
+                                                height: 200px;
+                                            }
+                                            .img-arrow-down i {
+                                                font-size: 60px;
+                                            }
+                                        </style>
+                                        <div id="FaceDatabaseTable">
+                                            <div class="row text-center" style="margin-top: 15px;">
+                                                <h3 class="col-12">Stored Faces</h3>
+                                                <div class="col-3">
+                                                    <img class="img-face" src="../../face-recognition/images/Shukuru_3.jpg" style="width: 100%;">
+                                                    <div class="text-center img-arrow-down"><i class="mdi mdi-arrow-down menu-icon"></i></div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <img class="img-face" src="../../face-recognition/images/Omega_1.jpg" style="width: 100%;">
+                                                    <div class="text-center img-arrow-down"><i class="mdi mdi-arrow-down menu-icon"></i></div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <img class="img-face" src="../../face-recognition/images/Gadi_1.jpg" style="width: 100%;">
+                                                    <div class="text-center img-arrow-down"><i class="mdi mdi-arrow-down menu-icon"></i></div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <img class="img-face" src="../../face-recognition/Face%20Database/all.jpg" style="width: 100%;">
+                                                    <div class="text-center img-arrow-down"><i class="mdi mdi-arrow-down menu-icon"></i></div>
+                                                </div>
+                                            </div>
+                                            <div class="row text-center" style="margin-top: 15px;">
+                                                <h3 class="col-12">Extracted Faces</h3>
+                                                <div class="col-3">
+                                                    <img class="img-face" src="../../face-recognition/Face%20Database/shukuru.jpg" style="width: 100%;">
+                                                    <div class="text-center img-arrow-down"><i class="mdi mdi-arrow-down menu-icon"></i></div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <img class="img-face" src="../../face-recognition/Face%20Database/omega.jpg" style="width: 100%;">
+                                                    <div class="text-center img-arrow-down"><i class="mdi mdi-arrow-down menu-icon"></i></div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <img class="img-face" src="../../face-recognition/Face%20Database/gadi.jpg" style="width: 100%;">
+                                                    <div class="text-center img-arrow-down"><i class="mdi mdi-arrow-down menu-icon"></i></div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <img class="img-face" src="../../face-recognition/Face%20Database/all.jpg" style="width: 100%;">
+                                                    <div class="text-center img-arrow-down"><i class="mdi mdi-arrow-down menu-icon"></i></div>
+                                                </div>
+                                            </div>
+                                            <div class="row text-center" style="margin-top: 15px;">
+                                                <h3 class="col-12">Matrix Faces</h3>
+                                                <div class="col-3">
+                                                    <img class="img-face" src="../../face-recognition/eigenfaces/eigen4.png" style="width: 100%;">
+                                                </div>
+                                                <div class="col-3">
+                                                    <img class="img-face" src="../../face-recognition/eigenfaces/eigen1.png" style="width: 100%;">
+                                                </div>
+                                                <div class="col-3">
+                                                    <img class="img-face" src="../../face-recognition/eigenfaces/eigen2.png" style="width: 100%;">
+                                                </div>
+                                                <div class="col-3">
+                                                    <img class="img-face" src="../../face-recognition/eigenfaces/eigen3.png" style="width: 100%;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="footer">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                            <span class="text-muted d-block text-center text-sm-left d-sm-inline-block"> <a href="https://www.cst.ur.ac.rw/" target="_blank">Copyright © 2021 CST Group 6</a></span>
+                            <span class="text-muted d-block text-center text-sm-left d-sm-inline-block"> <a href="https://www.cst.ur.ac.rw/" target="_blank">College of Science and Technology</a></span>
+                            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> <a target="_blank">UNIVERSITY OF RWANDA</a> </span>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+            <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+    </div>
+</div>
+<script src="../vendors/js/vendor.bundle.base.js"></script>
+<script src="../vendors/chart.js/Chart.min.js"></script>
+<script src="../js/off-canvas.js"></script>
+<script src="../js/hoverable-collapse.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>
+
+<script src="../js/template.js"></script>
+<script src="https://www.gstatic.com/firebasejs/3.2.0/firebase.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-storage.js"></script>
+<script src="../js/database.js"></script>
+<script src="../js/dashboard.js"></script>
+</body>
+
+</html>
