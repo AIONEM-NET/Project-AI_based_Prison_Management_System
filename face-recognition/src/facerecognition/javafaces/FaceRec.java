@@ -13,6 +13,8 @@ import javax.imageio.ImageIO;
 
 import facerecognition.utils.ValueIndexPair;
 
+import static facerecognition.gui.MainMenu.PROJECT_FOLDER;
+
 
 public class FaceRec{
 	private FaceBundle bundle;
@@ -243,7 +245,7 @@ public class FaceRec{
 	public void createEigenFaceImages(Matrix2D eigenfaces,int imgwidth) throws IOException{
         logger.info("creating eigen faces");
 		double[][] eigenfacesArray = eigenfaces.toArray();						
-		String fldrname = "A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\eigenfaces";
+		String fldrname = PROJECT_FOLDER+"eigenfaces";
 		makeNewFolder(fldrname);
 		String prefix = "eigen";
 		String ext = ".png";		
@@ -492,7 +494,7 @@ public class FaceRec{
 		 **/		
 		double[][] phi = getPhiData(egnfacesSubMatrix, eigenvalsSubMatrix);		
 		double[][] xnew = addAverageFaceData(phi);		
-		String reconFolderName = "A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\reconfaces";
+		String reconFolderName = PROJECT_FOLDER+"reconfaces";
 		String ext = ".png";		
 		reconstructPhiImages(phi, reconFolderName, ext);		
 		reconstructOriginalImages(xnew, reconFolderName, ext);

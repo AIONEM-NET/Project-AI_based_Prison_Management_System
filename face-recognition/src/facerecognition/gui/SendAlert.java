@@ -11,6 +11,8 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import static facerecognition.gui.MainMenu.PROJECT_FOLDER;
+
 public class SendAlert {
 
     static Properties mailServerProperties;
@@ -38,7 +40,7 @@ public class SendAlert {
         String emailBody = "This Email is automatically sent by Artificial Intelligence based Prison Management System. "
                 + "<br><hr>Event: There is a Person without an authorzied Identity trying to Login the Face Recognition System"
                 + "<br>"
-                + "<br>Subject: " + "<img src=\"A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\Pre-IMG\\LoginPerson.jpg\">"
+                + "<br>Subject: " + "<img src="+PROJECT_FOLDER+"Pre-IMG\\LoginPerson.jpg\">"
                 + "<br>Face Numbers: 1"
                 + "<br>Time: " + timeStamp
                 + "<hr>"

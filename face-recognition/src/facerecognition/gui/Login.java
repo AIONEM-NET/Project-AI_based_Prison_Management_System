@@ -1,6 +1,8 @@
 package facerecognition.gui;
 
 import facerecognition.javafaces.FaceRec;
+
+import static facerecognition.gui.MainMenu.PROJECT_FOLDER;
 import static facerecognition.javafaces.FaceRec.debug;
 import static facerecognition.javafaces.FaceRec.printError;
 import facerecognition.javafaces.MatchResult;
@@ -78,8 +80,8 @@ public class Login extends JPanel implements ActionListener {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 380);
         frame.setLocation(400, 150);
-        System.load("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\opencv_java2411.dll");
-        CascadeClassifier faceDetector = new CascadeClassifier("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\data\\haarcascade_frontalface_alt.xml");
+        System.load(PROJECT_FOLDER+"opencv_java2411.dll");
+        CascadeClassifier faceDetector = new CascadeClassifier(PROJECT_FOLDER+"data\\haarcascade_frontalface_alt.xml");
         //CascadeClassifier faceDetector = new CascadeClassifier("D:\\NetBeansProjects\\FYProject\\data\\lbpcascade_frontalface.xml");
         Login toc = new Login();
 
@@ -109,7 +111,7 @@ public class Login extends JPanel implements ActionListener {
                         Imgproc.resize(image_roi, image_roi, sz);
                         Imgproc.cvtColor(image_roi, image_roi, COLOR_BGR2GRAY);
                         Imgproc.equalizeHist(image_roi, image_roi);
-                        Highgui.imwrite("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\LoginPerson.jpg", image_roi);
+                        Highgui.imwrite(PROJECT_FOLDER+"LoginPerson.jpg", image_roi);
                     }
                     mat2Buf.setMatrix(webcam_image, ".jpg");
                     toc.setimage(mat2Buf.getBufferedImage());
@@ -126,8 +128,8 @@ public class Login extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        String imgToCheck = "A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\LoginPerson.jpg";
-        String imgDir = "A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\Face Database";
+        String imgToCheck = PROJECT_FOLDER+"LoginPerson.jpg";
+        String imgDir = PROJECT_FOLDER+"Face Database";
         int numFaces = 2;
         double thresholdVal = 1;
         MatchResult r = new FaceRec().processSelections(imgToCheck, imgDir, numFaces, thresholdVal);
@@ -161,8 +163,8 @@ public class Login extends JPanel implements ActionListener {
                         + "\nLoginTime: " + timeStamp
                         + "\nStatus: Verified", "Notification", 2);
 
-                Path source = Paths.get("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\LoginPerson.jpg");
-                Path targetDir = Paths.get("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\LoginRecords");
+                Path source = Paths.get(PROJECT_FOLDER+"LoginPerson.jpg");
+                Path targetDir = Paths.get(PROJECT_FOLDER+"LoginRecords");
 
                 try {
                     Files.createDirectories(targetDir);//in case target directory didn't exist

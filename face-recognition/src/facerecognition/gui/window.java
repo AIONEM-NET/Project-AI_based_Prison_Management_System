@@ -1,6 +1,8 @@
 package facerecognition.gui;
 
 import facerecognition.javafaces.FaceRec;
+
+import static facerecognition.gui.MainMenu.PROJECT_FOLDER;
 import static facerecognition.javafaces.FaceRec.debug;
 import static facerecognition.javafaces.FaceRec.printError;
 import facerecognition.javafaces.MatchResult;
@@ -73,7 +75,7 @@ class processor {
     // Create a constructor method  
 
     public processor() {
-        face_cascade = new CascadeClassifier("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\data\\haarcascade_frontalface_alt.xml");
+        face_cascade = new CascadeClassifier(PROJECT_FOLDER+"data\\haarcascade_frontalface_alt.xml");
         if (face_cascade.empty()) {
             System.out.println("--(!)Error loading A\n");
             return;
@@ -104,10 +106,10 @@ class processor {
             Imgproc.resize(image_roi, image_roi, sz);
             Imgproc.cvtColor(image_roi, image_roi, COLOR_BGR2GRAY);
             Imgproc.equalizeHist(image_roi, image_roi);
-            imwrite("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\PreIMG\\CropVideo.jpg", image_roi);
+            imwrite(PROJECT_FOLDER+"PreIMG\\CropVideo.jpg", image_roi);
 
-            String imgToCheck = "A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\PreIMG\\CropVideo.jpg";
-            String imgDir = "A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\Face Database";
+            String imgToCheck = PROJECT_FOLDER+"PreIMG\\CropVideo.jpg";
+            String imgDir = PROJECT_FOLDER+"Face Database";
 
             int numFaces = 2;
             double thresholdVal = 1;
@@ -165,7 +167,7 @@ public class window {
 
     public static void main(String arg[]) {
         // Load the native library.  
-        System.load("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\opencv_java2411.dll");
+        System.load(PROJECT_FOLDER+"opencv_java2411.dll");
         String window_name = "Capture - Face detection";
         JFrame frame = new JFrame(window_name);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

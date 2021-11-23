@@ -1,5 +1,11 @@
 package facerecognition.gui;
 
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import facerecognition.javafaces.FaceRec;
 import static facerecognition.javafaces.FaceRec.debug;
 import static facerecognition.javafaces.FaceRec.printError;
@@ -14,6 +20,7 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -59,6 +66,8 @@ import static org.opencv.highgui.Highgui.imwrite;
 
 public class MainMenu extends javax.swing.JFrame {
 
+    public static String PROJECT_FOLDER = "";
+
     File targetFile;
     BufferedImage targetImg;
     String imagePath;
@@ -83,8 +92,8 @@ public class MainMenu extends javax.swing.JFrame {
     static Session getMailSession;
     static MimeMessage generateMailMessage;
 
-    CascadeClassifier faceDetector = new CascadeClassifier("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\data\\haarcascade_frontalface_alt.xml");
-    //CascadeClassifier faceDetector = new CascadeClassifier("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\data\\lbpcascade_frontalface.xml");
+    CascadeClassifier faceDetector = new CascadeClassifier(PROJECT_FOLDER+"data\\haarcascade_frontalface_alt.xml");
+    //CascadeClassifier faceDetector = new CascadeClassifier(PROJECT_FOLDER+"data\\lbpcascade_frontalface.xml");
     MatOfRect faceDetections = new MatOfRect();
     Long startTime = System.currentTimeMillis();
 
@@ -158,10 +167,10 @@ public class MainMenu extends javax.swing.JFrame {
                                 Imgproc.resize(image_roi, image_roi, sz);
                                 Imgproc.cvtColor(image_roi, image_roi, COLOR_BGR2GRAY);
                                 Imgproc.equalizeHist(image_roi, image_roi);
-                                imwrite("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\PreIMG\\CropVideo.jpg", image_roi);
+                                imwrite(PROJECT_FOLDER+"PreIMG\\CropVideo.jpg", image_roi);
 
-                                String imgToCheck = "A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\PreIMG\\CropVideo.jpg";
-                                String imgDir = "A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\Face Database";
+                                String imgToCheck = PROJECT_FOLDER+"PreIMG\\CropVideo.jpg";
+                                String imgDir = PROJECT_FOLDER+"Face Database";
 
                                 String numFaces = "4";
                                 String thresholdVal = "1";
@@ -1021,9 +1030,9 @@ public class MainMenu extends javax.swing.JFrame {
 
     public void ImgdetectFace() throws IOException {
 
-        System.load("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\opencv_java2411.dll");
-        CascadeClassifier faceImageDetector = new CascadeClassifier("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\data\\haarcascade_frontalface_alt.xml");
-        Mat image = imread("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\PreIMG\\GrayscaleImg.jpg");
+        System.load(PROJECT_FOLDER+"opencv_java2411.dll");
+        CascadeClassifier faceImageDetector = new CascadeClassifier(PROJECT_FOLDER+"data\\haarcascade_frontalface_alt.xml");
+        Mat image = imread(PROJECT_FOLDER+"PreIMG\\GrayscaleImg.jpg");
 
         MatOfRect faceImageDetections = new MatOfRect();
 
@@ -1033,11 +1042,11 @@ public class MainMenu extends javax.swing.JFrame {
         if (faceImageDetections.toArray().length <= 0) {
 
             FD_Result.setLayout(new BorderLayout(0, 0));
-            FD_Result.add(new JLabel(new ImageIcon("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\PreIMG\\Output.jpg")));
+            FD_Result.add(new JLabel(new ImageIcon(PROJECT_FOLDER+"PreIMG\\Output.jpg")));
             setVisible(true);
 
             FR_img.setLayout(new BorderLayout(0, 0));
-            FR_img.add(new JLabel(new ImageIcon("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\Face Database\\Unknown.jpg")));
+            FR_img.add(new JLabel(new ImageIcon(PROJECT_FOLDER+"Face Database\\Unknown.jpg")));
             setVisible(true);
 
             ImgName.setText("Unidentified Person");
@@ -1062,9 +1071,9 @@ public class MainMenu extends javax.swing.JFrame {
         Imgproc.resize(image_roi, image_roi, sz);
         Imgproc.cvtColor(image_roi, image_roi, COLOR_BGR2GRAY);
         Imgproc.equalizeHist(image_roi, image_roi);
-        Highgui.imwrite("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\PreIMG\\CropImg.jpg", image_roi);
+        Highgui.imwrite(PROJECT_FOLDER+"PreIMG\\CropImg.jpg", image_roi);
 
-        buf = ImageIO.read(new File("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\ouput.jpg"));
+        buf = ImageIO.read(new File(PROJECT_FOLDER+"ouput.jpg"));
         ImageIcon icon = new ImageIcon(file.getAbsolutePath());
 
         Image img = getScaledImage(buf, FD_Result.getWidth(), FD_Result.getHeight());
@@ -1136,8 +1145,8 @@ public class MainMenu extends javax.swing.JFrame {
 
         long start = System.currentTimeMillis();
 
-        String imgToCheck = "A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\PreIMG\\CropImg.jpg";
-        String imgDir = "A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\Face Database";
+        String imgToCheck = PROJECT_FOLDER+"PreIMG\\CropImg.jpg";
+        String imgDir = PROJECT_FOLDER+"Face Database";
 
         int numFaces = 2;
         double thresholdVal = 36000;
@@ -1173,7 +1182,7 @@ public class MainMenu extends javax.swing.JFrame {
             }
             /* else {
             FR_img.setLayout(new BorderLayout(0, 0));
-            FR_img.add(new JLabel(new ImageIcon("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\Face Database\\Unknown.jpg")));
+            FR_img.add(new JLabel(new ImageIcon(PROJECT_FOLDER+"Face Database\\Unknown.jpg")));
             setVisible(true);
              */
         }
@@ -1199,7 +1208,7 @@ public class MainMenu extends javax.swing.JFrame {
             BufferedImage image1 = new BufferedImage(mat1.cols(), mat1.rows(), BufferedImage.TYPE_BYTE_GRAY);
             image1.getRaster().setDataElements(0, 0, mat1.cols(), mat1.rows(), data1);
 
-            File ouptut = new File("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\PreIMG\\GrayscaleImg.jpg");
+            File ouptut = new File(PROJECT_FOLDER+"PreIMG\\GrayscaleImg.jpg");
             ImageIO.write(image1, "PNG", ouptut);
             ImageIcon icon = new ImageIcon(image1);
             Image img = getScaledImage(icon.getImage(), ProcessImg.getWidth(), ProcessImg.getHeight());
@@ -1228,7 +1237,7 @@ public class MainMenu extends javax.swing.JFrame {
             ImageIcon icon = new ImageIcon(file.getAbsolutePath());
             Image img = getScaledImage(icon.getImage(), Dis_Images.getWidth(), Dis_Images.getHeight());
             icon = new ImageIcon(img);
-            File ouptut = new File("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\PreIMG\\OriginalImg.jpg");
+            File ouptut = new File(PROJECT_FOLDER+"PreIMG\\OriginalImg.jpg");
 
             Dis_Images.setIcon(icon);
         } else {
@@ -1256,7 +1265,7 @@ public class MainMenu extends javax.swing.JFrame {
     private void CropfaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CropfaceActionPerformed
         // TODO add your handling code here:
 
-        File inputFile = new File("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\PreIMG\\CropVideo.jpg");
+        File inputFile = new File(PROJECT_FOLDER+"PreIMG\\CropVideo.jpg");
         try {
             AddImgToDB.removeAll();
             AddImgToDB.repaint();
@@ -1265,11 +1274,11 @@ public class MainMenu extends javax.swing.JFrame {
             Graphics2D g2d = outputImage.createGraphics();
             g2d.drawImage(inputImage, 0, 0, 100, 100, null);
             g2d.dispose();
-            ImageIO.write(outputImage, "jpg", new File("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\PreIMG\\CropVideoResize.jpg"));
+            ImageIO.write(outputImage, "jpg", new File(PROJECT_FOLDER+"PreIMG\\CropVideoResize.jpg"));
 
             AddImgToDB.setLayout(new BorderLayout(0, 0));
 
-            AddImgToDB.add(new JLabel(new ImageIcon("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\PreIMG\\CropVideoResize.jpg")));
+            AddImgToDB.add(new JLabel(new ImageIcon(PROJECT_FOLDER+"PreIMG\\CropVideoResize.jpg")));
             setVisible(true);
 
         } catch (IOException ex) {
@@ -1292,8 +1301,8 @@ public class MainMenu extends javax.swing.JFrame {
             javax.swing.JOptionPane.showMessageDialog(null, "The Image has been saved into Face Database  ", "Notification", 1);
         }
 
-        Path source = Paths.get("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\PreIMG\\CropImg.jpg");
-        Path targetDir = Paths.get("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\Face Database");
+        Path source = Paths.get(PROJECT_FOLDER+"PreIMG\\CropImg.jpg");
+        Path targetDir = Paths.get(PROJECT_FOLDER+"Face Database");
 
         try {
             Files.createDirectories(targetDir);//in case target directory didn't exist
@@ -1324,8 +1333,8 @@ public class MainMenu extends javax.swing.JFrame {
             javax.swing.JOptionPane.showMessageDialog(null, "The Image has been saved into Face Database  ", "Notification", 1);
         }
 
-        Path source = Paths.get("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\PreIMG\\CropVideo.jpg");
-        Path targetDir = Paths.get("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\Face Database");
+        Path source = Paths.get(PROJECT_FOLDER+"PreIMG\\CropVideo.jpg");
+        Path targetDir = Paths.get(PROJECT_FOLDER+"Face Database");
 
         try {
             Files.createDirectories(targetDir);//in case target directory didn't exist
@@ -1345,7 +1354,7 @@ public class MainMenu extends javax.swing.JFrame {
     private void SearchImgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchImgActionPerformed
         FdataImgDisplay.removeAll();
         String n = SearchName.getText().trim();
-        String path = "A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\Face Database\\";
+        String path = PROJECT_FOLDER+"Face Database\\";
         File folder = new File(path);
         File[] listOfFiles = folder.listFiles();
         DefaultListModel listModel = new DefaultListModel();
@@ -1381,7 +1390,7 @@ public class MainMenu extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
 
-        String FolderName = "A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\Face Database\\";//Write your complete path here
+        String FolderName = PROJECT_FOLDER+"Face Database\\";//Write your complete path here
         try {
             Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + FolderName);
         } catch (IOException ex) {
@@ -1403,7 +1412,7 @@ public class MainMenu extends javax.swing.JFrame {
                 javax.swing.JOptionPane.showMessageDialog(null, "The Image has been saved into Face Database  ", "Notification", 1);
             }
             //grayscale Image
-            File input = new File("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\PreIMG\\loadImgToDB.jpg");
+            File input = new File(PROJECT_FOLDER+"PreIMG\\loadImgToDB.jpg");
             BufferedImage image = null;
 
             image = ImageIO.read(input);
@@ -1420,13 +1429,13 @@ public class MainMenu extends javax.swing.JFrame {
             BufferedImage image1 = new BufferedImage(mat1.cols(), mat1.rows(), BufferedImage.TYPE_BYTE_GRAY);
             image1.getRaster().setDataElements(0, 0, mat1.cols(), mat1.rows(), data1);
 
-            File ouptut = new File("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\PreIMG\\processingImgToDB.jpg");
+            File ouptut = new File(PROJECT_FOLDER+"PreIMG\\processingImgToDB.jpg");
             ImageIO.write(image1, "jpg", ouptut);
 
             //Crop fACE
-            System.load("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\opencv_java2411.dll");
-            CascadeClassifier faceImageDetector = new CascadeClassifier("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\data\\haarcascade_frontalface_alt.xml");
-            Mat image3 = imread("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\PreIMG\\loadImgToDB.jpg");
+            System.load(PROJECT_FOLDER+"opencv_java2411.dll");
+            CascadeClassifier faceImageDetector = new CascadeClassifier(PROJECT_FOLDER+"data\\haarcascade_frontalface_alt.xml");
+            Mat image3 = imread(PROJECT_FOLDER+"PreIMG\\loadImgToDB.jpg");
 
             MatOfRect faceImageDetections = new MatOfRect();
 
@@ -1457,11 +1466,11 @@ public class MainMenu extends javax.swing.JFrame {
                 Imgproc.resize(image_roi, image_roi, sz);
                 Imgproc.cvtColor(image_roi, image_roi, COLOR_BGR2GRAY);
                 Imgproc.equalizeHist(image_roi, image_roi);
-                Highgui.imwrite("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\PreIMG\\ImageReady.jpg", image_roi);
+                Highgui.imwrite(PROJECT_FOLDER+"PreIMG\\ImageReady.jpg", image_roi);
 
                 //copy
-                Path source = Paths.get("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\PreIMG\\ImageReady.jpg");
-                Path targetDir = Paths.get("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\Face Database");
+                Path source = Paths.get(PROJECT_FOLDER+"PreIMG\\ImageReady.jpg");
+                Path targetDir = Paths.get(PROJECT_FOLDER+"Face Database");
 
                 try {
                     Files.createDirectories(targetDir);//in case target directory didn't exist
@@ -1504,7 +1513,7 @@ public class MainMenu extends javax.swing.JFrame {
 
             Image image2 = icon.getImage();
             BufferedImage buffered = (BufferedImage) image2;
-            File outputfile = new File("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\PreIMG\\loadImgToDB.jpg");
+            File outputfile = new File(PROJECT_FOLDER+"PreIMG\\loadImgToDB.jpg");
             try {
                 ImageIO.write(buffered, "jpg", outputfile);
             } catch (IOException ex) {
@@ -1552,7 +1561,14 @@ public class MainMenu extends javax.swing.JFrame {
         }
         //</editor-fold>
         //load openCV 3.0 library
-        System.load("A:\\Software\\XAMPP\\htdocs\\AIONEM.NET_Job\\CST_2021_Artificial_Intelligence_based_Prison_Management_System\\face-recognition\\opencv_java2411.dll");
+
+        PROJECT_FOLDER = new File("").getAbsolutePath();
+
+        PROJECT_FOLDER += "\\";
+
+        System.out.println(PROJECT_FOLDER);
+
+        System.load(PROJECT_FOLDER+"opencv_java2411.dll");
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -1561,6 +1577,32 @@ public class MainMenu extends javax.swing.JFrame {
 
             }
         });
+
+        try {
+
+            FileInputStream serviceAccount = new FileInputStream(PROJECT_FOLDER+"ai-based-prison-management-firebase-adminsdk-drhf9-91fb29cfd2.json");
+
+            FirebaseOptions options = new FirebaseOptions.Builder()
+                    .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                    .setDatabaseUrl("https://ai-based-prison-management-default-rtdb.firebaseio.com")
+                    .build();
+
+            FirebaseApp.initializeApp(options);
+
+        } catch (Exception e) {
+            System.out.println("ERROR: invalid service account credentials.");
+            System.out.println(e.getMessage());
+        }
+
+        FirebaseDatabase.getInstance().getReference("records").child("1").setValue("Test", new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+
+                System.out.println(databaseError);
+
+            }
+        });
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
