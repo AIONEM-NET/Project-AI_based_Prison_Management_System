@@ -1,4 +1,4 @@
-package com.atharvakale.facerecognition;
+package com.facerecognition;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -39,7 +39,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.common.util.concurrent.ListenableFuture;
-
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -86,7 +85,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+
 public class MainActivity extends AppCompatActivity {
+
     FaceDetector detector;
 
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
@@ -114,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
 
     String modelFile="mobile_face_net.tflite"; //model name
 
-    private HashMap<String, SimilarityClassifier.Recognition> registered = new HashMap<>(); //saved Faces
+    private HashMap<String, Recognition> registered = new HashMap<>(); //saved Faces
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -282,7 +283,7 @@ public class MainActivity extends AppCompatActivity {
                     //Toast.makeText(context, input.getText().toString(), Toast.LENGTH_SHORT).show();
 
                     //Create and Initialize new object with Face embeddings and Name.
-                    SimilarityClassifier.Recognition result = new SimilarityClassifier.Recognition(
+                    Recognition result = new Recognition(
                             "0", "", -1f);
                     result.setExtra(embeedings);
 
@@ -332,7 +333,7 @@ public class MainActivity extends AppCompatActivity {
         String[] names= new String[registered.size()];
         boolean[] checkedItems = new boolean[registered.size()];
          int i=0;
-                for (Map.Entry<String, SimilarityClassifier.Recognition> entry : registered.entrySet())
+                for (Map.Entry<String, Recognition> entry : registered.entrySet())
                 {
                     //System.out.println("NAME"+entry.getKey());
                     names[i]=entry.getKey();
@@ -390,7 +391,7 @@ public class MainActivity extends AppCompatActivity {
         String[] names= new String[registered.size()];
         boolean[] checkedItems = new boolean[registered.size()];
         int i=0;
-        for (Map.Entry<String, SimilarityClassifier.Recognition> entry : registered.entrySet())
+        for (Map.Entry<String, Recognition> entry : registered.entrySet())
         {
             //System.out.println("NAME"+entry.getKey());
             names[i]=entry.getKey();
@@ -658,7 +659,7 @@ public class MainActivity extends AppCompatActivity {
     private Pair<String, Float> findNearest(float[] emb) {
 
         Pair<String, Float> ret = null;
-        for (Map.Entry<String, SimilarityClassifier.Recognition> entry : registered.entrySet()) {
+        for (Map.Entry<String, Recognition> entry : registered.entrySet()) {
 
             final String name = entry.getKey();
            final float[] knownEmb = ((float[][]) entry.getValue().getExtra())[0];
@@ -830,7 +831,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Save Faces to Shared Preferences.Conversion of Recognition objects to json string
-    private void insertToSP(HashMap<String, SimilarityClassifier.Recognition> jsonMap,boolean clear) {
+    private void insertToSP(HashMap<String, Recognition> jsonMap, boolean clear) {
         if(clear)
             jsonMap.clear();
         else
@@ -849,18 +850,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Load Faces from Shared Preferences.Json String to Recognition object
-    private HashMap<String, SimilarityClassifier.Recognition> readFromSP(){
+    private HashMap<String, Recognition> readFromSP(){
         SharedPreferences sharedPreferences = getSharedPreferences("HashMap", MODE_PRIVATE);
-        String defValue = new Gson().toJson(new HashMap<String, SimilarityClassifier.Recognition>());
+        String defValue = new Gson().toJson(new HashMap<String, Recognition>());
         String json=sharedPreferences.getString("map",defValue);
        // System.out.println("Output json"+json.toString());
-        TypeToken<HashMap<String,SimilarityClassifier.Recognition>> token = new TypeToken<HashMap<String,SimilarityClassifier.Recognition>>() {};
-        HashMap<String,SimilarityClassifier.Recognition> retrievedMap=new Gson().fromJson(json,token.getType());
+        TypeToken<HashMap<String, Recognition>> token = new TypeToken<HashMap<String, Recognition>>() {};
+        HashMap<String, Recognition> retrievedMap=new Gson().fromJson(json,token.getType());
        // System.out.println("Output map"+retrievedMap.toString());
 
         //During type conversion and save/load procedure,format changes(eg float converted to double).
         //So embeddings need to be extracted from it in required format(eg.double to float).
-        for (Map.Entry<String, SimilarityClassifier.Recognition> entry : retrievedMap.entrySet())
+        for (Map.Entry<String, Recognition> entry : retrievedMap.entrySet())
         {
             float[][] output=new float[1][OUTPUT_SIZE];
             ArrayList arrayList= (ArrayList) entry.getValue().getExtra();

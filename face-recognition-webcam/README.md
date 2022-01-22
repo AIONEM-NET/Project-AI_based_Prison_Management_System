@@ -2,8 +2,6 @@
 
 A minimalistic Face Recognition module which can be easily incorporated in any Android project.
 
-## [Playstore Link](https://play.google.com/store/apps/details?id=com.atharvakale.facerecognition)
-
 ## Key Features 
 - Fast and very accurate.
 - No re-training required to add new Faces.
@@ -21,14 +19,6 @@ A minimalistic Face Recognition module which can be easily incorporated in any A
 - MobileFaceNet : [Research Paper](https://arxiv.org/ftp/arxiv/papers/1804/1804.07573.pdf)
 - [Implementation](https://github.com/sirius-ai/MobileFaceNet_TF)
 
-## Installation
-
-Use Import from Version Control in Android Studio or Clone repo and open the project in Android Studio.
-
-```bash
-git clone https://github.com/atharvakale31/Face_Recognition_Android.git
-```
-Application file : [Face_Recognition.apk](https://drive.google.com/file/d/1l1ldvOUkI2y8WIq2IowxEiiAdhU2twYH/view?usp=sharing)
 
 ## Usage
 <table>
@@ -61,13 +51,3 @@ Application file : [Face_Recognition.apk](https://drive.google.com/file/d/1l1ldv
   </tr>
  </table>
  
-## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
-
-
-# Action Items
-- [ ] Improve Performance(Code Optimization)
-- [ ] Auto face orientation for Import Photo Action.
-- [ ] iOS application
-
