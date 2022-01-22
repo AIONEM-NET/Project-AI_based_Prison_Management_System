@@ -1,0 +1,581 @@
+<!--/* <?php
+
+include "../config.php";
+
+
+?> */-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title id="title">Register - Artificial Intelligence based Prison Management System</title>
+    <link rel="stylesheet" href="../vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="../vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.0.1/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/toast.css">
+    <link rel="shortcut icon" href="../images/icon_website.png" />
+
+    <style>
+
+        .bg-primary {
+            color: #06579a !important;
+            background-color: #FFFFFF !important;
+        }
+
+        .bg-primary:hover {
+            color: #06579a !important;
+            background-color: #FFFFFF !important;
+        }
+
+        .bg-primary .menu-icon {
+            color: #06579a !important;
+            background-color: #FFFFFF !important;
+        }
+
+    </style>
+
+</head>
+<body>
+<div class="container-scroller d-flex">
+    <nav class="sidebar sidebar-offcanvas" id="sidebar" style="background: #06579a;">
+        <ul class="nav" style="position: fixed; margin-top: -0px;">
+            <li class="nav-item sidebar-category hidden">
+                <p class="hidden">My ACCOUNT:
+                    <span class="text-center" id="accountType" style="font-weight: bold; color: #FFFFFF; background-color: #FFFFFF00; font-size: 22px;"></span>
+                </p>
+                <a class="hidden" href="#Logout" style="color: #06579a;" onclick="logout();" >- Logout</a>
+            </li>
+            <li class="nav-item sidebar-category hidden">
+                <p></p>
+                <span></span>
+            </li>
+            <li class="nav-item bg-gradient-warning" style="background: rgba(3,178,88,0.77); margin-right: 5px;">
+                <a class="nav-link" href="">
+                    <i class="mdi mdi-view-quilt menu-icon"></i>
+                    <span class="menu-title">AIPMS - FACE DB</span>
+                </a>
+            </li>
+            <li class="nav-item bg-gradient-secondary hidden">
+                <a class="nav-link" href="../dashboard/#Graph">
+                    <i class="mdi mdi-chart-pie menu-icon"></i>
+                    <span class="menu-title">Graph</span>
+                </a>
+            </li>
+            <li class="nav-item bg-gradient-secondary hidden">
+                <a class="nav-link" href="../dashboard/#Table">
+                    <i class="mdi mdi-grid-large menu-icon"></i>
+                    <span class="menu-title">Table</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="../dashboard/#Table">
+                    <button class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px;">
+                        <i class="mdi mdi-grid-large menu-icon"></i>
+                        Records
+                    </button>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="../dashboard/#Graph">
+                    <button class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px;">
+                        <i class="mdi mdi-chart-pie menu-icon"></i>
+                        Statistics
+                    </button>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="../dashboard/#Prisoners">
+                    <button class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px;">
+                        <i class="mdi mdi-account-group menu-icon"></i>
+                        Prisoners
+                    </button>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="../face-database/">
+                    <button class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px;">
+                        <i class="mdi mdi-face menu-icon"></i>
+                        Face Database
+                    </button>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="../screen-projector/">
+                    <button class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px;">
+                        <i class="mdi mdi-projector-screen menu-icon"></i>
+                        Screen Projector
+                    </button>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="../prisoner/">
+                    <button class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px;">
+                        <i class="mdi mdi-account-multiple-plus-outline menu-icon"></i>
+                        Add Prisoner
+                    </button>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="../register/">
+                    <button class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px; background-color: #00bf78 !important; color: #FFFFFF !important;">
+                        <i class="mdi mdi-account-multiple-plus-outline menu-icon"></i>
+                        Visitor Register
+                    </button>
+                </a>
+            </li>
+            <li class="nav-item hidden">
+                <a class="nav-link" href="#Alert" onclick='getData("Alert", "", 0, 0)'>
+                    <button class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px;">
+                        <i class="mdi mdi-bell menu-icon"></i>
+                        Records
+                    </button>
+                </a>
+            </li>
+            <li class="nav-item hidden">
+                <a class="nav-link" href="#Error" onclick='getData("Error", "", 0, 0)'>
+                    <button class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px;">
+                        <i class="mdi mdi-alert menu-icon"></i>
+                        Errors
+                    </button>
+                </a>
+            </li>
+            <li class="nav-item hidden">
+                <a class="nav-link" href="#Reset" onclick='resetData();'>
+                    <button class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px;">
+                        <i class="mdi mdi-notification-clear-all menu-icon"></i>
+                        Reset
+                    </button>
+                </a>
+            </li>
+            <li class="hidden">
+                <br>
+                <label for="timeFrom" style="min-width: 40px; color: #FFFFFF; font-weight: bold; margin-left: 10px;">FROM:</label>
+                <input id="timeFrom" type="date"/>
+            </li>
+            <li class="hidden">
+                <label for="timeTo" style="min-width: 40px; color: #FFFFFF; font-weight: bold; margin-left: 10px;">TO:</label>
+                <input id="timeTo" type="date"/>
+            </li>
+
+            <li class="nav-item text-center" style="margin-top: 20px; display: none;">
+
+                <label for="timeTo" style="min-width: 40px; color: #FFFFFF; font-weight: bold; margin-left: 10px;">ERROR CODES:</label>
+<br>
+                <span class="acc-isAdmin">
+
+              <a class="nav-link1" href="#200" onclick='getData("", "200")'>
+                <button class="btn bg-danger btn-sm menu-title text-center" style="min-width: 50px; background-color: #FFFFFF !important; color: #06579a; font-weight: bold;">200</button>
+              </a>
+              </span>
+                    <span class="acc-isSecurity">
+              <a class="nav-link1" href="#400" onclick='getData("", "400")'>
+                <button class="btn bg-danger btn-sm menu-title text-center" style="min-width: 50px; background-color: #FFFFFF !important; color: #06579a; font-weight: bold;">400</button>
+              </a>
+              </span>
+                    <span class="acc-isAuth">
+              <a class="nav-link1" href="#401" onclick='getData("", "401")'>
+                <button class="btn bg-danger btn-sm menu-title text-center" style="min-width: 50px; background-color: #FFFFFF !important; color: #06579a; font-weight: bold;">401</button>
+              </a>
+          </span>
+            </li>
+            <li class="nav-item text-center" style="margin-top: 10px; display: none;">
+          <span class="acc-isAdmin">
+              <a class="nav-link1" href="#500" onclick='getData("", "500")'>
+                <button class="btn bg-danger btn-sm menu-title text-center" style="min-width: 50px; background-color: #FFFFFF !important; color: #06579a; font-weight: bold;">500</button>
+              </a>
+              </span>
+                    <span class="acc-isSecurity">
+              <a class="nav-link1" href="#501" onclick='getData("", "501")'>
+                <button class="btn bg-danger btn-sm menu-title text-center" style="min-width: 50px; background-color: #FFFFFF !important; color: #06579a; font-weight: bold;">501</button>
+              </a>
+              </span>
+                    <span class="acc-isAuth">
+              <a class="nav-link1" href="#502" onclick='getData("", "502")'>
+                <button class="btn bg-danger btn-sm menu-title text-center" style="min-width: 50px; background-color: #FFFFFF !important; color: #06579a; font-weight: bold;">502</button>
+              </a>
+          </span>
+            </li>
+            <li class="nav-item text-center" style="margin-top: 10px; display: none;">
+          <span class="acc-isAdmin">
+              <a class="nav-link1" href="#503" onclick='getData("", "503")'>
+                <button class="btn bg-danger btn-sm menu-title text-center" style="min-width: 50px; background-color: #FFFFFF !important; color: #06579a; font-weight: bold;">503</button>
+              </a>
+              </span>
+                <span class="acc-isSecurity">
+              <a class="nav-link1" href="#504" onclick='getData("", "504")'>
+                <button class="btn bg-danger btn-sm menu-title text-center" style="min-width: 50px; background-color: #FFFFFF !important; color: #06579a; font-weight: bold;">504</button>
+              </a>
+              </span>
+                <span class="acc-isAuth">
+              <a class="nav-link1" href="#505" onclick='getData("", "505")'>
+                <button class="btn bg-danger btn-sm menu-title text-center" style="min-width: 50px; background-color: #FFFFFF !important; color: #06579a; font-weight: bold;">505</button>
+              </a>
+          </span>
+            </li>
+            <div class="text-center hidden">
+                <img src="../images/icon_website.png" style="width: 120px; border-radius: 50%; border: 2px solid #06579a; padding: 10px;"/>
+            </div>
+            <li class="nav-item hidden" style="margin-top: 20px;">
+                <a class="nav-link" href="#All" onclick='getData("")'>
+                    <button onclick="logout();" class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px;">
+                        <i class="mdi mdi-logout menu-icon"></i>
+                        Logout
+                    </button>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <div class="container-fluid page-body-wrapper">
+
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="row">
+                    <div class="col-12 col-xl-12 grid-margin stretch-card">
+                        <div class="row w-100 flex-grow">
+                            <div class="col-md-12 grid-margin stretch-card">
+                                <div class="card" id="ScreenProjector" style="min-height: 500px;">
+                                    <div class="card-body">
+                                    <h2 class="card-title1 text-center" style="font-size: 30px; padding-top: 20px; padding-bottom: 20px; background-color: #06579a; color: #FFFFFF;">REGISTER VISITOR - <span style="font-size: 16px; color: #06579a; padding: 2px; border-radius: 10px; border: 2px solid #FFFFFF; background-color: #FFFFFF;">AI Prison Management System</span></h2>
+                                    <p class="text-muted"></p>
+                                        <style>
+
+                                        </style>
+                                        <div id="ScreenProjectorTable" style="margin-top: 50px;">
+                                        <div class="row mb-3 text-center">
+                                            <div id="div-register" class="col-md-12">
+                                                
+                                                <form class="" id="form-register">
+                                                    <style>
+                                                        .register-visitor-label {
+                                                            font-size: 20px;
+                                                            width: 200px;
+                                                            height: 50px;
+                                                            font-weight: bold;
+                                                            margin-top: 10px;
+                                                            text-align: start;
+                                                        }
+                                                        .register-visitor-label i {
+                                                            font-size: 30px;
+                                                            height: 50px;
+                                                            font-weight: bold;
+                                                            display: none !important;
+                                                        }
+                                                        .register-visitor-input {
+                                                            width: 350px;
+                                                            height: 50px;
+                                                            margin-top: 0px;
+                                                            border: 2px solid #00bf78;
+                                                        }
+                                                        .register-visitor-input:focus {
+                                                            border: 4px solid #0053bf;
+                                                        }
+                                                        .register-visitor-input-select-option {
+                                                            width: 350px;
+                                                            height: 50px;
+                                                            margin-top: 0px;
+                                                            border: 2px solid #00bf78;
+                                                        }
+                                                    </style>
+                                                    <div class="text-center" style="margin-bottom: 30px;">
+                                                        <img src="../images/face_algorithm.png" style="height: 200px;">
+                                                        <img src="../images/test.jpg" style="position: fixed1; margin-right: 0px; height: 200px;">
+                                                    </div>
+                                                    <div>
+                                                        <label class="register-visitor-label"> <i class="mdi mdi-face menu-icon"></i> Visitor Name</label>
+                                                        <input class="register-visitor-input" type="text" name="name" id="name" placeholder="Enter visitor Name" required1>
+                                                    </div>
+                                                    <div>
+                                                        <label class="register-visitor-label"> <i class="mdi mdi-phone menu-icon"></i> Visitor Phone</label>
+                                                        <input class="register-visitor-input" type="tel" name="phone" id="phone" placeholder="Enter visitor Phone" required1>
+                                                    </div>
+                                                    <div>
+                                                        <label class="register-visitor-label"> <i class="mdi mdi-location menu-icon"></i> Visitor Location</label>
+                                                        <select class="register-visitor-input" name="location" id="location" required1>
+                                                            <option value="" selected>Select Location</option>
+                                                            <option value="Nyarugenge">Kigali - Nyarugenge</option>
+                                                            <option value="Gasabo">Kigali - Gasabo</option>
+                                                            <option value="Kicukiro">Kigali - Kicukiro</option>
+                                                            <option value="Burera">North - Burera</option>
+                                                            <option value="Gakenke">North - Gakenke</option>
+                                                            <option value="Gicumbi">North - Gicumbi</option>
+                                                            <option value="Musanze">North - Musanze</option>
+                                                            <option value="Rulindo">North - Rulindo</option>
+                                                            <option value="Gisagara">South - Gisagara</option>
+                                                            <option value="Huye">South - Huye</option>
+                                                            <option value="Kamonyi">South - Kamonyi</option>
+                                                            <option value="Muhanga">South - Muhanga</option>
+                                                            <option value="Nyamagabe">South - Nyamagabe</option>
+                                                            <option value="Nyanza">South - Nyanza</option>
+                                                            <option value="Nyaruguru">South - Nyaruguru</option>
+                                                            <option value="Ruhango">South - Ruhango</option>
+                                                            <option value="Bugesera">East - Bugesera</option>
+                                                            <option value="Gatsibo">East - Gatsibo</option>
+                                                            <option value="Kirehe">East - Kirehe</option>
+                                                            <option value="Ngoma">East - Ngoma</option>
+                                                            <option value="Nyagatare">East - Nyagatare</option>
+                                                            <option value="Rwamagana">East - Rwamagana</option>
+                                                            <option value="Karongi">West - Karongi</option>
+                                                            <option value="Ngororero">West - Ngororero</option>
+                                                            <option value="Nyabihu">West - Nyabihu</option>
+                                                            <option value="Nyamasheke">West - Nyamasheke</option>
+                                                            <option value="Rubavu">West - Rubavu</option>
+                                                            <option value="Rusizi">West - Rusizi</option>
+                                                            <option value="Rutsiro">West - Rutsiro</option>
+                                                        </select>
+                                                    </div>
+                                                    <div>
+                                                        <label class="register-visitor-label"> <i class="mdi mdi-phone menu-icon"></i> Visitor Gender</label>
+                                                        <select class="register-visitor-input" name="gender" id="gender" required1>
+                                                            <option value="" selected>Select Gender</option>
+                                                            <option value="Male">Male</option>
+                                                            <option value="Female">Female</option>
+                                                        </select>
+                                                    </div>
+                                                    <div>
+                                                        <label class="register-visitor-label"> <i class="mdi mdi-phone menu-icon"></i> Prisoner Name <span id="prisonerLoader" style="width: 30px; height: 30px; margin-left: 50px;"></span> </label>
+                                                        <select class="register-visitor-input" name="prisoner" id="prisoner" required1>
+                                                            <option value="" selected>Select Prisoner</option>
+                                                        </select>
+                                                    </div>
+                                                    <div>
+                                                        <label class="register-visitor-label"> <i class="mdi mdi-phone menu-icon"></i> Visitor Packages</label>
+                                                        <select style="height: 200px;" class="register-visitor-input" name="packages" id="packages" multiple required1>
+                                                            <option value="" selected>Select Packages</option>
+                                                            <option value="Shoes" selected>-> Shoes</option>
+                                                            <option value="Clothes" selected>-> Clothes</option>
+                                                            <option value="Cleaning Materials" selected>-> Cleaning Materials</option>
+                                                        </select>
+                                                    </div>
+                                                    <div>
+                                                        <label class="register-visitor-label"> <i class="mdi mdi-phone menu-icon"></i> Package Money</label>
+                                                        <input class="register-visitor-input" type="number" name="packagesMoney" id="packagesMoney" placeholder="Enter Amount" required1>
+                                                    </div>
+                                                    <div>
+                                                        <label class="register-visitor-label"> <i class="mdi mdi-phone menu-icon"></i> Other Packages</label>
+                                                        <input class="register-visitor-input" type="text" name="packagesOther" id="packagesOther" placeholder="Enter Other Packages" required1>
+                                                    </div>
+                                                    <div>
+                                                        <label class="register-visitor-label"> <i class="mdi mdi-phone menu-icon"></i> Visiting Date</label>
+                                                        <input class="register-visitor-input" type="datetime" name="date" id="date" placeholder="Select visiting Date" disabled required1>
+                                                    </div>
+                                                    <button class="btn btn-success" type="submit" id="btn-register" style="margin-top: 30px; width: 550px; font-weight: bold; font-size: 30px;">SAVE REGISTRATION</button>
+                                                </form>
+
+                                            </div>
+                                        </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="footer">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                            <span class="text-muted d-block text-center text-sm-left d-sm-inline-block"> <a href="https://www.cst.ur.ac.rw/" target="_blank">Copyright © 2021 CST Group 6</a></span>
+                            <span class="text-muted d-block text-center text-sm-left d-sm-inline-block"> <a href="https://www.cst.ur.ac.rw/" target="_blank">College of Science and Technology</a></span>
+                            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> <a target="_blank">UNIVERSITY OF RWANDA</a> </span>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+            <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+    </div>
+</div>
+<script src="../vendors/js/vendor.bundle.base.js"></script>
+<script src="../vendors/chart.js/Chart.min.js"></script>
+<script src="../js/off-canvas.js"></script>
+<script src="../js/hoverable-collapse.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>
+
+<script src="../js/toast.js"></script>
+<script src="../js/template.js"></script>
+<script src="https://www.gstatic.com/firebasejs/3.2.0/firebase.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-storage.js"></script>
+<script src="../js/database.js"></script>
+<script src="../js/dashboard.js"></script>
+
+<script>
+
+var date = new Date();
+
+var time = date.getTime() - date.getMilliseconds();
+
+$("#date").val(date.toUTCString())
+
+    
+var name1 = getUrlParameter('name');
+var gender1 = getUrlParameter('gender');
+var isRecongized = getUrlParameter('recongized') == 'true' ? true : false;
+
+if(!isEmpty(name1)) {
+    $("#name").val(name1);
+    $("#name").attr('disabled', true);
+}
+if(!isEmpty(gender1)) {
+    $("#gender").val(gender1).change();
+    $("#gender").attr('disabled', true);
+}
+
+$("#form-register").on('submit', function(event){
+    event.preventDefault();
+
+
+    var name = $("#name").val();
+    var phone = $("#phone").val();
+    var location = $("#location").val();
+    var gender = $("#gender").val();
+    var prisoner = $("#prisoner").val();
+    var packages = $("#packages").val();
+    var packagesOther = $("#packagesOther").val();
+    var packagesMoney = $("#packagesMoney").val();
+    var date = $("#date").val();
+
+    var packagesList = "";
+    var packagesCount = 0;
+
+    for (let i = 0; i < packages.length; i++) {
+        packagesCount = packagesCount + 1;
+        packagesList += packages[i] + "\n";
+    }
+
+    packagesList = packagesList +"Money: "+ packagesMoney + "\n";
+
+    if((""+packagesOther).length > 0) {
+        packagesCount = packagesCount + 1;
+        packagesList = packagesList +"Others: "+ packagesOther + "\n";
+    }
+
+    if(isEmpty(name)) {
+        showToast("Name required", "", "");
+        return;
+    }
+    if(isEmpty(phone)) {
+        showToast("Phone required", "", "");
+        return;
+    }
+    if(isEmpty(location)) {
+        showToast("Location required", "", "");
+        return;
+    }
+    if(isEmpty(gender)) {
+        showToast("Gender required", "", "");
+        return;
+    }
+    if(isEmpty(prisoner)) {
+        showToast("Prisoner required", "", "");
+        return;
+    }
+    if(isEmpty(packages)) {
+        showToast("Packages required", "", "");
+        return;
+    }
+    if(isEmpty(date)) {
+        showToast("Date required", "", "");
+        return;
+    }
+
+    
+    $("#div-register").addClass("is-loading");
+
+
+    var id = time/100;
+
+    
+    var visit_data = {};
+    visit_data["name"] = name;
+    visit_data["phone"] = phone;
+    visit_data["location"] = location;
+    visit_data["gender"] = gender;
+    visit_data["location"] = location;
+    visit_data["prisoner"] = prisoner;
+    visit_data["packages"] = packages;
+    visit_data["packagesList"] = packagesList;
+    visit_data["packagesOther"] = packagesOther;
+    visit_data["packagesMoney"] = packagesMoney;
+    visit_data["time"] = time;
+    visit_data["isRecongized"] = isRecongized;
+
+    database.ref('Visits').child(id).set(visit_data);
+
+    setTimeout(function() {
+        $("#div-register").removeClass("is-loading");
+        showToast("Vistor Registerd Successfuly", "", "");
+    }, 3000);
+
+    setTimeout(function() {
+        window.location.replace("");
+    }, 5000);
+
+
+});
+
+
+$("#prisonerLoader").addClass("is-loading");
+
+
+database.ref('Prisoners').orderByChild("time").on('value', function(snapshot) {
+
+    var childCounts = snapshot.numChildren();
+
+    var t = 0;
+    var i = 0;
+
+    var htmlAll = "";
+
+    snapshot.forEach(function(childSnapshot) {
+
+      if (t === 0) {
+        htmlAll = '<option class="register-visitor-input-select-option" value="" selected>Select Prisoner</option>';
+      }
+
+      t++;
+
+      var childKey = childSnapshot.key;
+      var childData = childSnapshot.val();
+
+      if(childData.isImprisoned == true) {
+            i++;
+            htmlAll = htmlAll + '<option class="register-visitor-input-select-option" value="'+childData.name+'" selected>'+childData.name+'</option>';
+      }
+
+      if(t == childCounts) {
+        $("#prisoner").html(htmlAll);
+
+        $("#prisonerLoader").removeClass("is-loading");
+      }
+
+
+    });
+
+});
+
+</script>
+
+</body>
+
+</html>

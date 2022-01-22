@@ -92,20 +92,15 @@
     var username = $("input[name='username']",this).val();
     var password = $("input[name='password']",this).val();
     $("#login").addClass("is-loading");
-    setInterval(function() {
+    setTimeout(function() {
       $("#login").removeClass("is-loading");
-      if((username === "isAdmin" || username === "isSecurity" || username === "isAuth" || username === "isSecurityisAuth" || username === "npc" || username === "rnp" || username === "police") && password === "admin") {
+      if((username === "admin" || username === "accountant" || username === "register") && password === "admin") {
         localStorage.setItem("userUID", username);
         localStorage.setItem("userName", username);
         localStorage.setItem("userAccount", username);
-        if(username === "isAdmin") localStorage.setItem("userAccount", "isAdmin");
-        if(username === "isSecurity") localStorage.setItem("userAccount", "isSecurity");
-        if(username === "isAuth") localStorage.setItem("userAccount", "isAuth");
-        if(username === "isSecurityisAuth") localStorage.setItem("userAccount", "isSecurity");
-        if(username === "isSecurityisAuth") localStorage.setItem("userAccount1", "isAuth");
-        if(username === "npc") localStorage.setItem("userAccount", "");
-        if(username === "rnp") localStorage.setItem("userAccount", "");
-        if(username === "police") localStorage.setItem("userAccount", "");
+        if(username === "register") localStorage.setItem("userAccount", "mtn");
+        if(username === "accountant") localStorage.setItem("userAccount1", "");
+        if(username === "admin") localStorage.setItem("userAccount", "");
         alert("Login Successfully. Continue to Admin Dashboard as "+ "\""+ username.toUpperCase() +"\"");
         window.location.replace("../dashboard/");
       }else {

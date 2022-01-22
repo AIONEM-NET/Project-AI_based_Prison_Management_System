@@ -1,10 +1,10 @@
-<?php
+<!-- <?php
 
 include "../config.php";
 
 
 ?>
-
+ -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -18,6 +18,7 @@ include "../config.php";
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.0.1/css/buttons.dataTables.min.css">
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/toast.css">
     <link rel="shortcut icon" href="../images/icon_website.png" />
 
     <style>
@@ -37,7 +38,12 @@ include "../config.php";
             background-color: #FFFFFF !important;
         }
 
-        .status-- {
+        .btn:hover {
+            color: #FFFFFF !important;
+            background-color: #918d8e !important;
+        }
+
+        .status- {
             color: #FFFFFF;
             font-weight: bold;
             padding: 10px;
@@ -45,28 +51,71 @@ include "../config.php";
             border-radius: 10px;
         }
 
-        .status-200 {
+        .imprisoned-yes {
             color: #FFFFFF;
             font-weight: bold;
             padding: 10px;
             background-color: rgba(12, 132, 70, 0.87);
             border-radius: 10px;
+            border: solid 2px rgba(12, 132, 70, 0.87)
         }
-
-        .status-500 {
-            color: #FFFFFF;
+        .imprisoned-yes:hover {
+            color: rgba(12, 132, 70, 0.87);
             font-weight: bold;
             padding: 10px;
-            background-color: #fc7b00;
+            background-color: #FFFFFF;
             border-radius: 10px;
+            border: solid 2px rgba(12, 132, 70, 0.87)
         }
 
-        .status-505 {
+        .status-completed {
             color: #FFFFFF;
             font-weight: bold;
             padding: 10px;
             background-color: #e30719;
             border-radius: 10px;
+            border: solid 2px #e30719
+        }
+        .status-completed:hover {
+            color: #e30719;
+            font-weight: bold;
+            padding: 10px;
+            background-color: #FFFFFF;
+            border-radius: 10px;
+            border: solid 2px #e30719
+        }
+        .status-waiting {
+            color: #FFFFFF;
+            font-weight: bold;
+            padding: 10px;
+            background-color: rgba(12, 132, 70, 0.87);
+            border-radius: 10px;
+            border: solid 2px rgba(12, 132, 70, 0.87)
+        }
+        .status-yes:waiting {
+            color: rgba(12, 132, 70, 0.87);
+            font-weight: bold;
+            padding: 10px;
+            background-color: #FFFFFF;
+            border-radius: 10px;
+            border: solid 2px rgba(12, 132, 70, 0.87)
+        }
+
+        .imprisoned-no {
+            color: #FFFFFF;
+            font-weight: bold;
+            padding: 10px;
+            background-color: #e30719;
+            border-radius: 10px;
+            border: solid 2px #e30719
+        }
+        .imprisoned-no:hover {
+            color: #e30719;
+            font-weight: bold;
+            padding: 10px;
+            background-color: #FFFFFF;
+            border-radius: 10px;
+            border: solid 2px #e30719
         }
 
     </style>
@@ -86,7 +135,7 @@ include "../config.php";
                 <p></p>
                 <span></span>
             </li>
-            <li class="nav-item bg-gradient-warning" style="background: rgba(3,178,88,0.77);">
+            <li class="nav-item bg-gradient-warning" style="background: rgba(3,178,88,0.77); margin-right: 5px;">
                 <a class="nav-link" href="">
                     <i class="mdi mdi-view-quilt menu-icon"></i>
                     <span class="menu-title">AIPMS - DASHBOARD</span>
@@ -117,6 +166,14 @@ include "../config.php";
                     <button class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px;">
                         <i class="mdi mdi-chart-pie menu-icon"></i>
                         Statistics
+                    </button>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="../dashboard/#Prisoners">
+                    <button class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px;">
+                        <i class="mdi mdi-account-group menu-icon"></i>
+                        Prisoners
                     </button>
                 </a>
             </li>
@@ -170,60 +227,81 @@ include "../config.php";
                 <input id="timeTo" type="date"/>
             </li>
 
-            <li class="nav-item text-center" style="margin-top: 20px; display: none;">
+            <li class="nav-item text-center" style="margin-top: 20px; display: none1;">
 
-                <label for="timeTo" style="min-width: 40px; color: #FFFFFF; font-weight: bold; margin-left: 10px;">ERROR CODES:</label>
-<br>
+                <label for="timeTo" style="min-width: 40px; color: #FFFFFF; font-weight: bold; margin-left: 10px;">REPORTS FILTERS:</label>
+                <br>
                 <span class="acc-isAdmin">
 
-              <a class="nav-link1" href="#200" onclick='getData("", "200")'>
-                <button class="btn bg-danger btn-sm menu-title text-center" style="min-width: 50px; background-color: #FFFFFF !important; color: #06579a; font-weight: bold;">200</button>
+              <a class="nav-link1" href="#Male" onclick='getData("", "MALE")'>
+                <button class="btn bg-danger btn-sm menu-title text-center" style="min-width: 50px; background-color: #c96405 !important; color: #FFFFFF; font-weight: bold;">MALE</button>
               </a>
               </span>
                     <span class="acc-isSecurity">
-              <a class="nav-link1" href="#400" onclick='getData("", "400")'>
-                <button class="btn bg-danger btn-sm menu-title text-center" style="min-width: 50px; background-color: #FFFFFF !important; color: #06579a; font-weight: bold;">400</button>
+              <a class="nav-link1" href="#Female" onclick='getData("", "FEMALE")'>
+                <button class="btn bg-danger btn-sm menu-title text-center" style="min-width: 50px; background-color: #c96405 !important; color: #FFFFFF; font-weight: bold;">FEMALE</button>
               </a>
               </span>
                     <span class="acc-isAuth">
-              <a class="nav-link1" href="#401" onclick='getData("", "401")'>
-                <button class="btn bg-danger btn-sm menu-title text-center" style="min-width: 50px; background-color: #FFFFFF !important; color: #06579a; font-weight: bold;">401</button>
+              <a sty class="nav-link1" href="#scan" onclick='getData("", "isFace")'>
+                <button class="btn bg-danger btn-sm menu-title text-center" style="min-width: 50px; background-color: #c96405 !important; color: #FFFFFF; font-weight: bold;">SCAN</button>
               </a>
           </span>
+            <li class="nav-item text-center" style="margin-top: 10px;">
+                <a class="nav-link1 text-center" href="#2hrs" onclick='filterDate(7200000)'>
+                    <span class="btn bg-primary btn-sm menu-title text-center" style="width: 70px; font-weight: bold; background-color: #c96405 !important; color: #FFFFFF !important;">
+                        <!-- <i class="mdi mdi-logout menu-icon"></i> -->
+                        2 Hrs
+                    </span>
+                </a>
+                <span>
+                    <a class="nav-link1 text-center" href="#4hr" onclick='filterDate(14400000)'>
+                        <span class="btn bg-primary btn-sm menu-title text-center" style="width: 70px; font-weight: bold; background-color: #c96405 !important; color: #FFFFFF !important;">
+                            <!-- <i class="mdi mdi-logout menu-icon"></i> -->
+                            4 Hrs
+                        </span>
+                    </a>
+                </span>
+                <span>
+                    <a class="nav-link1 text-center" href="#6hrs" onclick='filterDate(21600000)'>
+                        <span class="btn bg-primary btn-sm menu-title text-center" style="width: 70px; font-weight: bold; background-color: #c96405 !important; color: #FFFFFF !important;">
+                            <!-- <i class="mdi mdi-logout menu-icon"></i> -->
+                            6 Hrs
+                        </span>
+                    </a>
+                </span>
             </li>
-            <li class="nav-item text-center" style="margin-top: 10px; display: none;">
-          <span class="acc-isAdmin">
-              <a class="nav-link1" href="#500" onclick='getData("", "500")'>
-                <button class="btn bg-danger btn-sm menu-title text-center" style="min-width: 50px; background-color: #FFFFFF !important; color: #06579a; font-weight: bold;">500</button>
-              </a>
-              </span>
-                    <span class="acc-isSecurity">
-              <a class="nav-link1" href="#501" onclick='getData("", "501")'>
-                <button class="btn bg-danger btn-sm menu-title text-center" style="min-width: 50px; background-color: #FFFFFF !important; color: #06579a; font-weight: bold;">501</button>
-              </a>
-              </span>
-                    <span class="acc-isAuth">
-              <a class="nav-link1" href="#502" onclick='getData("", "502")'>
-                <button class="btn bg-danger btn-sm menu-title text-center" style="min-width: 50px; background-color: #FFFFFF !important; color: #06579a; font-weight: bold;">502</button>
-              </a>
-          </span>
+            <li class="nav-item text-center" style="margin-top: 10px;">
+                <a class="nav-link1 text-center" href="#Today" onclick='filterDate(86400000)'>
+                    <span class="btn bg-primary btn-sm menu-title text-center" style="width: 80px; font-weight: bold; background-color: #c96405 !important; color: #FFFFFF !important;">
+                        <!-- <i class="mdi mdi-logout menu-icon"></i> -->
+                        Today
+                    </span>
+                </a>
+                <span>
+                    <a class="nav-link1 text-center" href="#Week" onclick='filterDate(604800000)'>
+                        <span class="btn bg-primary btn-sm menu-title text-center" style="width: 80px; font-weight: bold; background-color: #c96405 !important; color: #FFFFFF !important;">
+                            <!-- <i class="mdi mdi-logout menu-icon"></i> -->
+                            Week
+                        </span>
+                    </a>
+                </span>
             </li>
-            <li class="nav-item text-center" style="margin-top: 10px; display: none;">
-          <span class="acc-isAdmin">
-              <a class="nav-link1" href="#503" onclick='getData("", "503")'>
-                <button class="btn bg-danger btn-sm menu-title text-center" style="min-width: 50px; background-color: #FFFFFF !important; color: #06579a; font-weight: bold;">503</button>
-              </a>
-              </span>
-                <span class="acc-isSecurity">
-              <a class="nav-link1" href="#504" onclick='getData("", "504")'>
-                <button class="btn bg-danger btn-sm menu-title text-center" style="min-width: 50px; background-color: #FFFFFF !important; color: #06579a; font-weight: bold;">504</button>
-              </a>
-              </span>
-                <span class="acc-isAuth">
-              <a class="nav-link1" href="#505" onclick='getData("", "505")'>
-                <button class="btn bg-danger btn-sm menu-title text-center" style="min-width: 50px; background-color: #FFFFFF !important; color: #06579a; font-weight: bold;">505</button>
-              </a>
-          </span>
+            <li class="nav-item text-center" style="margin-top: 10px;">
+                <a class="nav-link1 text-center" href="#Month" onclick='filterDate(2592000000)'>
+                    <span class="btn bg-primary btn-sm menu-title text-center" style="width: 80px; font-weight: bold; background-color: #c96405 !important; color: #FFFFFF !important;">
+                        <!-- <i class="mdi mdi-logout menu-icon"></i> -->
+                        Month
+                    </span>
+                </a>
+                <span>
+                    <a class="nav-link1 text-center" href="#Year" onclick='filterDate("")'>
+                        <span class="btn bg-primary btn-sm menu-title text-center" style="width: 80px; font-weight: bold; background-color: #c96405 !important; color: #FFFFFF !important;">
+                            <!-- <i class="mdi mdi-logout menu-icon"></i> -->
+                            Year
+                        </span>
+                    </a>
+                </span>
             </li>
             <div class="text-center hidden">
                 <img src="../images/icon_website.png" style="width: 120px; border-radius: 50%; border: 2px solid #06579a; padding: 10px;"/>
@@ -244,33 +322,45 @@ include "../config.php";
             <div class="content-wrapper">
                 <div class="row" id="Table">
                     <div class="col-lg-12 grid-margin stretch-card">
-                        <div class="card" style="min-height: 450px;">
+                        <div class="card" style="min-height: 600px;">
                             <div class="card-body">
-                                <h2 class="card-title1 text-center" style="font-size: 30px; padding-top: 20px; padding-bottom: 20px; background-color: #06579a; color: #FFFFFF;"">RECORDS - AI Prison Management System</h2>
-                                <div class="table-responsive" id="TableCard" style="min-height: 500px;">
-                                    <table id="dataTable" class="table table-striped display nowrap" style="width:100%">
+                            <h2 class="card-title1 text-center" style="font-size: 30px; padding-top: 20px; padding-bottom: 20px; background-color: #06579a; color: #FFFFFF;">VISITORS' RECORDS - <span style="font-size: 16px; color: #06579a; padding: 2px; border-radius: 10px; border: 2px solid #FFFFFF; background-color: #FFFFFF;">AI Prison Management System</span> <a class="btn" href="../register/" style="font-size: 16px; color: #FFFFFF; padding: 2px; border-radius: 10px; border: 2px solid #FFFFFF; background-color: #06579a; margin-left: 100px;">+ Register Visitor</a></h2>
+                            <div class="table-responsive" id="TableCard">
+                                    <table id="dataTable" class="table table-striped display nowrap" style="width: 100%; min-height: 600px;">
                                         <thead>
                                         <tr>
                                             <th class="text-center font-weight-bold">
                                                 NO
                                             </th>
                                             <th class="text-center font-weight-bold">
-                                                WEBSITE
+                                                PHOTO
                                             </th>
                                             <th class="text-center font-weight-bold">
-                                                CODE
+                                                NAME
                                             </th>
                                             <th class="text-center font-weight-bold">
-                                                AUTHENTICATION
+                                                PHONE
                                             </th>
                                             <th class="text-center font-weight-bold">
-                                                ALERT
+                                                GENDER
                                             </th>
                                             <th class="text-center font-weight-bold">
-                                                DURATION
+                                                LOCATION
                                             </th>
                                             <th class="text-center font-weight-bold">
-                                                LAST DATE
+                                                PRISONER
+                                            </th>
+                                            <th class="text-center font-weight-bold">
+                                                DATE
+                                            </th>
+                                            <th class="text-center font-weight-bold">
+                                                PACKAGES
+                                            </th>
+                                            <th class="text-center font-weight-bold">
+                                                FACE RECOGNIZED
+                                            </th>
+                                            <th class="text-center font-weight-bold">
+                                                STATUS
                                             </th>
                                         </tr>
                                         </thead>
@@ -288,11 +378,13 @@ include "../config.php";
                             <div class="col-md-12 grid-margin stretch-card">
                                 <div class="card" id="Graph">
                                     <div class="card-body">
-                                        <h1 class="card-title text-center" style="font-size: 30px; padding-top: 20px; padding-bottom: 20px; background-color: #06579a; color: #FFFFFF;"> <span class="hidden" id="accountName" style="padding: 3px; border-radius: 10px; border: solid 1px #000000;"></span> STATISTICS - AI Prison Management System</h1>
-                                        <p class="text-muted"></p>
+                                    <h2 class="card-title1 text-center" style="font-size: 30px; padding-top: 20px; padding-bottom: 20px; background-color: #06579a; color: #FFFFFF;">VISITORS' STATISTICS - <span style="font-size: 16px; color: #06579a; padding: 2px; border-radius: 10px; border: 2px solid #FFFFFF; background-color: #FFFFFF;">AI Prison Management System</span></h2>
+                                    <p class="text-muted"></p>
                                         <br>
                                         <div id="GraphCard">
-                                        <canvas id="audience-chart" style="min-height: 450px;"></canvas>
+                                            <div id="div-audience-chart">
+                                                <canvas id="audience-chart"></canvas>
+                                            </div>
                                         <div class="row mb-3 text-center">
                                             <div class="col-md-12">
                                                 <div class="d-flex justify-content-between traffic-status text-center">
@@ -302,28 +394,28 @@ include "../config.php";
                                                         <div class="color-border text-center" style="background-color: #0c8446; width: 100%;"></div>
                                                     </div>
                                                     <div class="item text-center" style="min-width: 70px; border: 2px #ec6c11 solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
-                                                        <h4 class="mb-">Alert</h4>
-                                                        <h3 class="font-weight-bold mb-0 text-center" id="countWarning">-</h3>
+                                                        <h4 class="mb-">Male</h4>
+                                                        <h3 class="font-weight-bold mb-0 text-center" id="countMale">-</h3>
                                                         <div class="color-border text-center" style="background-color: #ec6c11; width: 100%;"></div>
                                                     </div>
                                                     <div class="item text-center" style="min-width: 70px; border: 2px #b6047e solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
-                                                        <h4 class="mb-">Error</h4>
-                                                        <h3 class="font-weight-bold mb-0 text-center" id="countDanger">-</h3>
+                                                        <h4 class="mb-">Female</h4>
+                                                        <h3 class="font-weight-bold mb-0 text-center" id="countFemale">-</h3>
                                                         <div class="color-border text-center" style="background-color: #b6047e; width: 100%;"></div>
                                                     </div>
                                                     <div class="item text-center" style="min-width: 70px; border: 2px #e0d12e solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
-                                                        <h4 class="mb-">Admin</h4>
-                                                        <h3 class="font-weight-bold mb-0 text-center" id="countIsAdmin">-</h3>
+                                                        <h4 class="mb-">With Packages</h4>
+                                                        <h3 class="font-weight-bold mb-0 text-center" id="countWithPackages">-</h3>
                                                         <div class="color-border text-center" style="background-color: #e0d12e; width: 100%;"></div>
                                                     </div>
                                                     <div class="item text-center" style="min-width: 70px; border: 2px #b2000e solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
-                                                        <h4 class="mb-">Security</h4>
-                                                        <h3 class="font-weight-bold mb-0 text-center" id="countIsSecurity">-</h3>
+                                                        <h4 class="mb-">No of Packages</h4>
+                                                        <h3 class="font-weight-bold mb-0 text-center" id="countPackages">-</h3>
                                                         <div class="color-border text-center" style="background-color: #b2000e; width: 100%;"></div>
                                                     </div>
                                                     <div class="item text-center" style="min-width: 70px; border: 2px #1767d2 solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
-                                                        <h4 class="mb-">Authentication</h4>
-                                                        <h3 class="font-weight-bold mb-0 text-center" id="countIsAuth">-</h3>
+                                                        <h4 class="mb-">Face Recognized</h4>
+                                                        <h3 class="font-weight-bold mb-0 text-center" id="countIsRecognized">-</h3>
                                                         <div class="color-border text-center" style="background-color: #1767d2; width: 100%;"></div>
                                                     </div>
                                                 </div>
@@ -336,77 +428,103 @@ include "../config.php";
                         </div>
                     </div>
                 </div>
-                <div class="row hidden">
+                <div class="row" id="Prisoners">
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card" style="min-height: 600px;">
+                            <div class="card-body">
+                                <h2 class="card-title1 text-center" style="font-size: 30px; padding-top: 20px; padding-bottom: 20px; background-color: #06579a; color: #FFFFFF;">LIST of PRISONERS - <span style="font-size: 16px; color: #06579a; padding: 2px; border-radius: 10px; border: 2px solid #FFFFFF; background-color: #FFFFFF;">AI Prison Management System</span> <a class="btn" href="../prisoner/" style="font-size: 16px; color: #FFFFFF; padding: 2px; border-radius: 10px; border: 2px solid #FFFFFF; background-color: #06579a; margin-left: 100px;">+ Add Prisoner</a></h2>
+                                <div class="table-responsive" id="TableCardPrisoners">
+                                    <table id="dataTablePrisoners" class="table table-striped display nowrap" style="width: 100%; min-height: 600px;">
+                                        <thead>
+                                        <tr>
+                                            <th class="text-center font-weight-bold">
+                                                NO
+                                            </th>
+                                            <th class="text-center font-weight-bold">
+                                                PHOTO
+                                            </th>
+                                            <th class="text-center font-weight-bold">
+                                                NAME
+                                            </th>
+                                            <th class="text-center font-weight-bold">
+                                                GENDER
+                                            </th>
+                                            <th class="text-center font-weight-bold">
+                                                LOCATION
+                                            </th>
+                                            <th class="text-center font-weight-bold">
+                                                DATE
+                                            </th>
+                                            <th class="text-center font-weight-bold">
+                                                IS IMPRIZONED
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="tbodyPrisoners">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-12 col-xl-12 grid-margin stretch-card">
                         <div class="row w-100 flex-grow">
                             <div class="col-md-12 grid-margin stretch-card">
-                                <div class="card" id="FaceDatabase" style="min-height: 500px;">
+                                <div class="card" id="GraphPrisoners">
                                     <div class="card-body">
-                                        <h1 class="card-title text-center" style="font-size: 30px; padding-top: 20px; padding-bottom: 20px; background-color: #06579a; color: #FFFFFF;"> <span class="hidden" id="accountName" style="padding: 3px; border-radius: 10px; border: solid 1px #000000;"></span> FACE DATABASE - AI Prison Management System</h1>
-                                        <p class="text-muted"></p>
-                                        <style>
-                                            .img-face {
-                                                border: 2px #00bf78 solid;
-                                                height: 200px;
-                                            }
-                                            .img-arrow-down i {
-                                                font-size: 60px;
-                                            }
-                                        </style>
-                                        <div id="FaceDatabaseTable">
-                                            <div class="row text-center" style="margin-top: 15px;">
-                                                <h3 class="col-12">Stored Faces</h3>
-                                                <div class="col-3">
-                                                    <img class="img-face" src="../../face-recognition/images/Shukuru_3.jpg" style="width: 100%;">
-                                                    <div class="text-center img-arrow-down"><i class="mdi mdi-arrow-down menu-icon"></i></div>
-                                                </div>
-                                                <div class="col-3">
-                                                    <img class="img-face" src="../../face-recognition/images/Omega_1.jpg" style="width: 100%;">
-                                                    <div class="text-center img-arrow-down"><i class="mdi mdi-arrow-down menu-icon"></i></div>
-                                                </div>
-                                                <div class="col-3">
-                                                    <img class="img-face" src="../../face-recognition/images/Gadi_1.jpg" style="width: 100%;">
-                                                    <div class="text-center img-arrow-down"><i class="mdi mdi-arrow-down menu-icon"></i></div>
-                                                </div>
-                                                <div class="col-3">
-                                                    <img class="img-face" src="../../face-recognition/Face%20Database/all.jpg" style="width: 100%;">
-                                                    <div class="text-center img-arrow-down"><i class="mdi mdi-arrow-down menu-icon"></i></div>
+                                    <h2 class="card-title1 text-center" style="font-size: 30px; padding-top: 20px; padding-bottom: 20px; background-color: #06579a; color: #FFFFFF;">PRISONERS's STATISTICS - <span style="font-size: 16px; color: #06579a; padding: 2px; border-radius: 10px; border: 2px solid #FFFFFF; background-color: #FFFFFF;">AI Prison Management System</span></h2>
+                                    <p class="text-muted"></p>
+                                        <br>
+                                        <div id="GraphCard">
+                                        <div class="row">
+                                            <div id="div-audience-chartPrisoners" class="col-md-8">
+                                                <canvas id="audience-chartPrisoners"></canvas>
+                                            </div>
+                                            <div style="display: none;" class="col-md-8">
+                                                <canvas id="chartBar1"></canvas>
+                                            </div>
+                                            <div id="chartPie1Div" class="col-md-4">
+                                                <canvas id="chartPie1"></canvas>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3 text-center">
+                                            <div class="col-md-12">
+                                                <div class="d-flex justify-content-between traffic-status text-center">
+                                                    <div class="item text-center" style="min-width: 70px; border: 2px #0c8446 solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
+                                                        <h4 class="mb-">All</h4>
+                                                        <h3 class="font-weight-bold mb-0 text-center" id="countAllPrisoners">-</h3>
+                                                        <div class="color-border text-center" style="background-color: #0c8446; width: 100%;"></div>
+                                                    </div>
+                                                    <div class="item text-center" style="min-width: 70px; border: 2px #ec6c11 solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
+                                                        <h4 class="mb-">Male</h4>
+                                                        <h3 class="font-weight-bold mb-0 text-center" id="countMalePrisoners">-</h3>
+                                                        <div class="color-border text-center" style="background-color: #ec6c11; width: 100%;"></div>
+                                                    </div>
+                                                    <div class="item text-center" style="min-width: 70px; border: 2px #b6047e solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
+                                                        <h4 class="mb-">Female</h4>
+                                                        <h3 class="font-weight-bold mb-0 text-center" id="countFemalePrisoners">-</h3>
+                                                        <div class="color-border text-center" style="background-color: #b6047e; width: 100%;"></div>
+                                                    </div>
+                                                    <div class="item text-center" style="min-width: 70px; border: 2px #e0d12e solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
+                                                        <h4 class="mb-">With Packages</h4>
+                                                        <h3 class="font-weight-bold mb-0 text-center" id="countWithPackagesPrisoners">-</h3>
+                                                        <div class="color-border text-center" style="background-color: #e0d12e; width: 100%;"></div>
+                                                    </div>
+                                                    <div class="item text-center" style="min-width: 70px; border: 2px #b2000e solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
+                                                        <h4 class="mb-">No of Packages</h4>
+                                                        <h3 class="font-weight-bold mb-0 text-center" id="countPackagesPrisoners">-</h3>
+                                                        <div class="color-border text-center" style="background-color: #b2000e; width: 100%;"></div>
+                                                    </div>
+                                                    <div class="item text-center" style="min-width: 70px; border: 2px #1767d2 solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
+                                                        <h4 class="mb-">Is Imprizoned</h4>
+                                                        <h3 class="font-weight-bold mb-0 text-center" id="countIsImprisonedPrisoners">-</h3>
+                                                        <div class="color-border text-center" style="background-color: #1767d2; width: 100%;"></div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="row text-center" style="margin-top: 15px;">
-                                                <h3 class="col-12">Extracted Faces</h3>
-                                                <div class="col-3">
-                                                    <img class="img-face" src="../../face-recognition/Face%20Database/shukuru.jpg" style="width: 100%;">
-                                                    <div class="text-center img-arrow-down"><i class="mdi mdi-arrow-down menu-icon"></i></div>
-                                                </div>
-                                                <div class="col-3">
-                                                    <img class="img-face" src="../../face-recognition/Face%20Database/omega.jpg" style="width: 100%;">
-                                                    <div class="text-center img-arrow-down"><i class="mdi mdi-arrow-down menu-icon"></i></div>
-                                                </div>
-                                                <div class="col-3">
-                                                    <img class="img-face" src="../../face-recognition/Face%20Database/gadi.jpg" style="width: 100%;">
-                                                    <div class="text-center img-arrow-down"><i class="mdi mdi-arrow-down menu-icon"></i></div>
-                                                </div>
-                                                <div class="col-3">
-                                                    <img class="img-face" src="../../face-recognition/Face%20Database/all.jpg" style="width: 100%;">
-                                                    <div class="text-center img-arrow-down"><i class="mdi mdi-arrow-down menu-icon"></i></div>
-                                                </div>
-                                            </div>
-                                            <div class="row text-center" style="margin-top: 15px;">
-                                                <h3 class="col-12">Matrix Faces</h3>
-                                                <div class="col-3">
-                                                    <img class="img-face" src="../../face-recognition/eigenfaces/eigen4.png" style="width: 100%;">
-                                                </div>
-                                                <div class="col-3">
-                                                    <img class="img-face" src="../../face-recognition/eigenfaces/eigen1.png" style="width: 100%;">
-                                                </div>
-                                                <div class="col-3">
-                                                    <img class="img-face" src="../../face-recognition/eigenfaces/eigen2.png" style="width: 100%;">
-                                                </div>
-                                                <div class="col-3">
-                                                    <img class="img-face" src="../../face-recognition/eigenfaces/eigen3.png" style="width: 100%;">
-                                                </div>
-                                            </div>
+                                        </div>
                                         </div>
                                     </div>
                                 </div>
@@ -434,6 +552,7 @@ include "../config.php";
 </div>
 <script src="../vendors/js/vendor.bundle.base.js"></script>
 <script src="../vendors/chart.js/Chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="../js/off-canvas.js"></script>
 <script src="../js/hoverable-collapse.js"></script>
 
@@ -446,6 +565,7 @@ include "../config.php";
 <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>
 
+<script src="../js/toast.js"></script>
 <script src="../js/template.js"></script>
 <script src="https://www.gstatic.com/firebasejs/3.2.0/firebase.js"></script>
 <script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-app.js"></script>
@@ -454,6 +574,6 @@ include "../config.php";
 <script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-storage.js"></script>
 <script src="../js/database.js"></script>
 <script src="../js/dashboard.js"></script>
-</body>
 
+</body>
 </html>
