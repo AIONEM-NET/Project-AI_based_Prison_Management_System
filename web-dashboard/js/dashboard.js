@@ -176,16 +176,16 @@ function getData(status, keyword, timeFrom, timeTo) {
           if(childData.isRecognized !== null && childData.isRecognized == true) {
             countIsRecognized++;
           }
-          
-          html += '<td class="text-center"><img src="'+(childData.photo != null && (""+childData.photo).length !== 0 ? "../face-database/"+childData.photo+".png" : "../images/face_algorithm.png")+'"></td>';
+
+          html += '<td class="text-center"><img style="height: 70px; width: 70px;" src="'+(childData.photo != null && (""+childData.photo).length !== 0 ? childData.photo : "../images/test.jpg")+'"></td>';
           html += '<td class="text-center">'+(childData.name != null && (""+childData.name).length !== 0 ? childData.name : "-")+'</td>';
           html += '<td class="text-center">'+(childData.phone != null && (""+childData.phone).length !== 0 ? childData.phone : "-")+'</td>';
           html += '<td class="text-center">'+(childData.gender != null && (""+childData.gender).length !== 0 ? childData.gender : "-")+'</td>';
           html += '<td class="text-center">'+(childData.location != null && (""+childData.location).length !== 0 ? childData.location : "-")+'</td>';
           html += '<td class="text-center">'+(childData.prisoner != null && (""+childData.prisoner).length !== 0 ? childData.prisoner : "-")+'</td>';
+          html += '<td class="text-center">'+'<div class="text-center recognized-'+((childData.isRecognized != null && childData.isRecognized == true) ? "yes" : "no")+'">'+((childData.isRecognized != null && childData.isRecognized == true) ? "YES" : "NO")+'</div></td>';
           html += '<td class="text-center">'+(childData.time != null && (""+childData.time).length !== 0 ? new Date(childData.time).toString().substring(0, 21) : "-")+'</td>';
           html += '<td class="text-center">'+(childData.packages != null && (""+childData.packages) !== 0 ? (childData.packages > 0 ? childData.packages : 1) : "-")+'</td>';
-          html += '<td class="text-center">'+((childData.isRecognized != null && childData.isRecognized == true) ? "YES" : "NO")+'</td>';
           html += '<td class="text-center" id="visit-status-'+childKey+'" onclick1="visitStatus(\''+childKey+'\''+', \''+childData.name+'\''+', \''+childData.status+'\')"><div class="text-center status-'+((childData.status != null && childData.status == 'done') ? "completed" : "waiting")+'">'+((childData.status != null && childData.status == 'done') ? "COMPLETED" : "WAITING")+'</div></td>';
 
           html += "</tr>";
@@ -240,13 +240,13 @@ function getData(status, keyword, timeFrom, timeTo) {
             '                                                PRISONER\n' +
             '                                            </th>\n' +
             '                                            <th class="text-center font-weight-bold">\n' +
+            '                                                FACE RECOGNIZED\n' +
+            '                                            </th>\n' +
+            '                                            <th class="text-center font-weight-bold">\n' +
             '                                                DATE\n' +
             '                                            </th>\n' +
             '                                            <th class="text-center font-weight-bold">\n' +
             '                                                PACKAGES\n' +
-            '                                            </th>\n' +
-            '                                            <th class="text-center font-weight-bold">\n' +
-            '                                                IS RECOGNIZED\n' +
             '                                            </th>\n' +
             '                                            <th class="text-center font-weight-bold">\n' +
             '                                                STATUS\n' +
@@ -476,7 +476,7 @@ function getData(status, keyword, timeFrom, timeTo) {
             countIsImprisoned++;
           }
           
-          html += '<td class="text-center"><img src="'+(childData.photo != null && (""+childData.photo).length !== 0 ? "../face-database/"+childData.photo+".png" : "../images/face_algorithm.png")+'"></td>';
+          html += '<td class="text-center"><img style="height: 60px; width: 60px;" src="'+(childData.photo != null && (""+childData.photo).length !== 0 ? childData.photo : "../images/prisoner.jpg")+'"></td>';
           html += '<td class="text-center">'+(childData.name != null && (""+childData.name).length !== 0 ? childData.name : "-")+'</td>';
           html += '<td class="text-center">'+(childData.gender != null && (""+childData.gender).length !== 0 ? childData.gender : "-")+'</td>';
           html += '<td class="text-center">'+(childData.location != null && (""+childData.location).length !== 0 ? childData.location : "-")+'</td>';
@@ -759,6 +759,10 @@ if(userName == "isAuth") {
 }
 if(userName == "isSecurityisAuth") {
   $(".acc-isAdmin").addClass("hidden");
+}
+
+if(userName == "observer") {
+  $(".acc-P-Observer").addClass("hidden");
 }
 
 function logout() {

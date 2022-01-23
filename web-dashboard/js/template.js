@@ -94,15 +94,29 @@
     $("#login").addClass("is-loading");
     setTimeout(function() {
       $("#login").removeClass("is-loading");
-      if((username === "admin" || username === "accountant" || username === "register") && password === "admin") {
+      if((username === "admin" || username === "dataentry" || username === "dataentry@prisoners" || username === "dataentry@visitors" || username === "dataentry@packages" || username === "observer" || username === "projector") && password === "aifacerecognition@prison") {
         localStorage.setItem("userUID", username);
         localStorage.setItem("userName", username);
         localStorage.setItem("userAccount", username);
         if(username === "register") localStorage.setItem("userAccount", "mtn");
         if(username === "accountant") localStorage.setItem("userAccount1", "");
         if(username === "admin") localStorage.setItem("userAccount", "");
-        alert("Login Successfully. Continue to Admin Dashboard as "+ "\""+ username.toUpperCase() +"\"");
-        window.location.replace("../dashboard/");
+        alert("Login Successfully. Continue as "+ "\""+ username.toUpperCase() +"\"");
+        if(username === "admin") {
+          window.location.replace("../dashboard/");
+        }else if(username === "dataentry") {
+          window.location.replace("../register/");
+        }else if(username === "dataentry@prisoners") {
+          window.location.replace("../prisoner/");
+        }else if(username === "dataentry@visitors") {
+          window.location.replace("../register/");
+        }else if(username === "dataentry@packages") {
+          window.location.replace("../packages/");
+        }else if(username === "projector") {
+          window.location.replace("../screen-projector/");
+        }else if(username === "observer") {
+          window.location.replace("../dashboard/");
+        }
       }else {
         alert("Invalid Username or Password !!!  Please try again.");
       }

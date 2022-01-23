@@ -34,12 +34,17 @@ import androidx.camera.core.ImageProxy;
 import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.common.util.concurrent.ListenableFuture;
 
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.mlkit.vision.common.InputImage;
@@ -60,9 +65,12 @@ import android.util.Size;
 import android.view.View;
 
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -78,6 +86,7 @@ import java.nio.MappedByteBuffer;
 import java.nio.ReadOnlyBufferException;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -98,7 +107,8 @@ public class MainActivity extends AppCompatActivity {
     Button recognize,camera_switch, actions;
     ImageButton add_face;
     CameraSelector cameraSelector;
-    boolean start=true,flipX=false;
+    boolean start = true,flipX=false;
+    boolean isRecognizing = true;
     Context context=MainActivity.this;
     int cam_face=CameraSelector.LENS_FACING_BACK; //Default Back Camera
 
@@ -132,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
         recognize=findViewById(R.id.button3);
         camera_switch=findViewById(R.id.button5);
         actions=findViewById(R.id.button2);
-        preview_info.setText("\n        Recognized Face:");
+        preview_info.setText("\nRecognized Face:");
         //Camera Permission
         if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_REQUEST_CODE);
@@ -145,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
                 builder.setTitle("Select Action:");
 
                 // add a checkbox list
-                String[] names= {"View Recognition List","Update Recognition List","Save Recognitions","Load Recognitions","Clear All Recognitions","Import Photo (Beta)"};
+                String [] names= {"View Face Recognition List","Update Face Recognition List","Save Face Recognitions","Load Face Recognitions","Clear All Face Recognitions","Train Face from Photo", "Train Face from Camera", "Open Face Detector WebCAM"};
 
                 builder.setItems(names, new DialogInterface.OnClickListener() {
                     @Override
@@ -170,6 +180,27 @@ public class MainActivity extends AppCompatActivity {
                                 break;
                             case 5:
                                 loadphoto();
+                                break;
+                            case 6:
+
+                                isRecognizing = false;
+                                recognize.setText("SAVE Face To Database");
+                                add_face.setVisibility(View.VISIBLE);
+                                reco_name.setVisibility(View.INVISIBLE);
+                                face_preview.setVisibility(View.VISIBLE);
+                                preview_info.setText("1.Bring Face in view of Camera.\n\n2.Your Face preview will appear here.\n\n3.Click Add button to save face.");
+
+                                break;
+                            case 7:
+
+                                isRecognizing = true;
+                                start = true;
+                                recognize.setText("FACE RECOGNITION WEBCAM");
+                                add_face.setVisibility(View.INVISIBLE);
+                                reco_name.setVisibility(View.VISIBLE);
+                                face_preview.setVisibility(View.INVISIBLE);
+                                preview_info.setText("\nRecognized Face:");
+
                                 break;
                         }
 
@@ -220,25 +251,10 @@ public class MainActivity extends AppCompatActivity {
         recognize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(recognize.getText().toString().equals("Recognize"))
-                {
-                 start=true;
-                recognize.setText("Add Face");
-                add_face.setVisibility(View.INVISIBLE);
-                reco_name.setVisibility(View.VISIBLE);
-                face_preview.setVisibility(View.INVISIBLE);
-                preview_info.setText("\n    Recognized Face:");
-                //preview_info.setVisibility(View.INVISIBLE);
-                }
-                else
-                {
-                    recognize.setText("Recognize");
-                    add_face.setVisibility(View.VISIBLE);
-                    reco_name.setVisibility(View.INVISIBLE);
-                    face_preview.setVisibility(View.VISIBLE);
-                    preview_info.setText("1.Bring Face in view of Camera.\n\n2.Your Face preview will appear here.\n\n3.Click Add button to save face.");
+                if(recognize.getText().toString().equalsIgnoreCase("FACE RECOGNITION WEBCAM")) {
 
-
+                } else {
+                    addFace();
                 }
 
             }
@@ -262,47 +278,190 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-    private void addFace()
-    {
+
+    AlertDialog.Builder alertDialog;
+    EditText inputName = null;
+    EditText inputID = null;
+    EditText inputGender = null;
+    String name = "";
+    String identity = "";
+    String gender = "";
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        insertToSP(registered,false);
+
+    }
+
+    private void addFace() {
         {
 
-            start=false;
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setTitle("Enter Name");
+            start = false;
 
-                // Set up the input
-            final EditText input = new EditText(context);
+            alertDialog = new AlertDialog.Builder(context);
+            alertDialog.setTitle("Add Trained FACE to DataBase");
 
-            input.setInputType(InputType.TYPE_CLASS_TEXT );
-            builder.setView(input);
+            LinearLayout linearLayout = new LinearLayout(this);
+            linearLayout.setOrientation(LinearLayout.VERTICAL);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT);
+            linearLayout.setLayoutParams(lp);
 
-                // Set up the buttons
-            builder.setPositiveButton("ADD", new DialogInterface.OnClickListener() {
+            inputName = new EditText(MainActivity.this);
+            LinearLayout.LayoutParams lpInputName = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            inputName.setLayoutParams(lpInputName);
+
+            inputID = new EditText(MainActivity.this);
+            LinearLayout.LayoutParams lpInputPhone = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            inputID.setLayoutParams(lpInputPhone);
+
+            inputGender = new EditText(MainActivity.this);
+            LinearLayout.LayoutParams lpInputGender = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            inputGender.setLayoutParams(lpInputGender);
+
+            CheckBox checkboxGenderMale = new CheckBox(MainActivity.this);
+            LinearLayout.LayoutParams lpInputGenderMale = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            checkboxGenderMale.setLayoutParams(lpInputGenderMale);
+
+            CheckBox checkboxGenderFemale = new CheckBox(MainActivity.this);
+            LinearLayout.LayoutParams lpInputGenderFemale = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            checkboxGenderFemale.setLayoutParams(lpInputGenderFemale);
+
+            linearLayout.addView(inputName);
+            linearLayout.addView(inputID);
+            linearLayout.addView(inputGender);
+            linearLayout.addView(checkboxGenderMale);
+            linearLayout.addView(checkboxGenderFemale);
+
+            alertDialog.setView(linearLayout);
+
+
+            inputName.setHint("Enter Person Name");
+            inputName.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+            inputName.setText(name);
+
+            inputID.setHint("Enter Person ID Number");
+            inputID.setInputType(InputType.TYPE_CLASS_NUMBER);
+            inputID.setText(identity);
+
+            inputGender.setHint("Select Person Gender");
+            inputGender.setInputType(InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
+            inputGender.setText(gender);
+            inputGender.setEnabled(false);
+
+            checkboxGenderMale.setText("MALE");
+            checkboxGenderMale.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    //Toast.makeText(context, input.getText().toString(), Toast.LENGTH_SHORT).show();
-
-                    //Create and Initialize new object with Face embeddings and Name.
-                    Recognition result = new Recognition(
-                            "0", "", -1f);
-                    result.setExtra(embeedings);
-
-                    registered.put( input.getText().toString(),result);
-                    start=true;
-
+                public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                    if(isChecked) {
+                        checkboxGenderFemale.setChecked(false);
+                    }
                 }
             });
-            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+            checkboxGenderFemale.setText("FEMALE");
+            checkboxGenderFemale.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                    if(isChecked) {
+                        checkboxGenderMale.setChecked(false);
+                    }
+                }
+            });
+
+            if("male".equalsIgnoreCase(gender)) {
+                checkboxGenderMale.setChecked(true);
+            } else if("female".equalsIgnoreCase(gender)) {
+                checkboxGenderFemale.setChecked(true);
+            }
+
+
+            alertDialog.setPositiveButton("SAVE", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    start=true;
+
+                    name = inputName.getText().toString();
+                    identity = inputID.getText().toString();
+
+                    if(checkboxGenderMale.isChecked()) {
+                        inputGender.setText("MALE");
+                    } else if(checkboxGenderFemale.isChecked()) {
+                        inputGender.setText("FEMALE");
+                    }
+                    gender = inputGender.getText().toString();
+
+                    if (!name.contains(" ")) {
+                        Toast.makeText(MainActivity.this, "Enter a valid Name", Toast.LENGTH_LONG).show();
+                        inputName.setError("Invalid Name!");
+                        return;
+                    }
+                    inputName.setError(null);
+
+                    if(identity.length() != 16) {
+                        Toast.makeText(MainActivity.this, "Enter a valid ID Number", Toast.LENGTH_LONG).show();
+                        inputID.setError("Invalid ID Number!");
+                        return;
+                    }
+                    if (!identity.startsWith("119") && !identity.startsWith("120")) {
+                        Toast.makeText(MainActivity.this, "Enter a valid ID Number", Toast.LENGTH_LONG).show();
+                        inputID.setError("Invalid ID Number!");
+                        return;
+                    }
+                    inputID.setError(null);
+
+                    if(gender.isEmpty()) {
+                        Toast.makeText(MainActivity.this, "Select Gender", Toast.LENGTH_LONG).show();
+                        inputGender.setError("Gender required!");
+                        return;
+                    }
+                    inputGender.setError(null);
+
+                    Recognition result = new Recognition(identity, name, -1f, gender);
+                    result.setExtra(embeedings);
+
+                    registered.put(name, result);
+                    start = true;
+
+                    name = "";
+                    identity = "";
+                    gender = "";
+
+                    dialog.dismiss();
+
+                    Toast.makeText(MainActivity.this, "Face Training saved to Database", Toast.LENGTH_LONG).show();
+                }
+            });
+            alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    start = true;
                     dialog.cancel();
                 }
             });
 
-            builder.show();
+            alertDialog.show();
         }
     }
+
     private  void clearnameList()
     {
         AlertDialog.Builder builder =new AlertDialog.Builder(context);
@@ -391,13 +550,10 @@ public class MainActivity extends AppCompatActivity {
         String[] names= new String[registered.size()];
         boolean[] checkedItems = new boolean[registered.size()];
         int i=0;
-        for (Map.Entry<String, Recognition> entry : registered.entrySet())
-        {
-            //System.out.println("NAME"+entry.getKey());
-            names[i]=entry.getKey();
+        for (Map.Entry<String, Recognition> entry : registered.entrySet()) {
+            names[i]=entry.getKey() +" ("+ entry.getValue().getId() +")";
             checkedItems[i]=false;
             i=i+1;
-
         }
         builder.setItems(names,null);
 
@@ -478,7 +634,7 @@ public class MainActivity extends AppCompatActivity {
                 InputImage image = null;
 
 
-                @SuppressLint("UnsafeExperimentalUsageError")
+                @SuppressLint({"UnsafeExperimentalUsageError", "UnsafeOptInUsageError"})
                 // Camera Feed-->Analyzer-->ImageProxy-->mediaImage-->InputImage(needed for ML kit face detection)
 
                 Image mediaImage = imageProxy.getImage();
@@ -534,10 +690,13 @@ public class MainActivity extends AppCompatActivity {
                                                 }
                                                 else
                                                 {
-                                                    if(registered.isEmpty())
+                                                    if(registered.isEmpty()) {
                                                         reco_name.setText("Add Face");
-                                                    else
+                                                        findViewById(R.id.coordinatorLayout).setBackgroundColor(getResources().getColor(R.color.black));
+                                                    } else {
                                                         reco_name.setText("No Face Detected!");
+                                                        findViewById(R.id.coordinatorLayout).setBackgroundColor(getResources().getColor(R.color.yellow));
+                                                    }
                                                 }
 
                                             }
@@ -617,8 +776,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         float distance = Float.MAX_VALUE;
-        String id = "0";
-        String label = "?";
 
         //Compare new face with saved Faces.
         if (registered.size() > 0) {
@@ -628,17 +785,20 @@ public class MainActivity extends AppCompatActivity {
             if (nearest != null) {
 
                 final String name = nearest.first;
-                label = name;
                 distance = nearest.second;
-                if(distance<1.000f) //If distance between Closest found face is more than 1.000 ,then output UNKNOWN face.
+                Recognition recognition = registered.get(name);
+
+                if (distance < 1.000f) { //If distance between Closest found face is more than 1.000 ,then output UNKNOWN face.
                     reco_name.setText(name);
-                else
+                    onFaceRecognized(name, distance, recognition, bitmap);
+                } else {
                     reco_name.setText("Unknown");
-                    System.out.println("nearest: " + name + " - distance: " + distance);
-
-
+                    onFaceRecognized("Unknown", distance, null, null);
                 }
+
+                System.out.println("nearest: " + name + " - distance: " + distance);
             }
+        }
 
 
 //            final int numDetectionsOutput = 1;
@@ -872,7 +1032,6 @@ public class MainActivity extends AppCompatActivity {
             entry.getValue().setExtra(output);
 
             //System.out.println("Entry output "+entry.getKey()+" "+entry.getValue().getExtra() );
-
         }
 //        System.out.println("OUTPUT"+ Arrays.deepToString(outut));
         Toast.makeText(context, "Recognitions Loaded", Toast.LENGTH_SHORT).show();
@@ -882,7 +1041,7 @@ public class MainActivity extends AppCompatActivity {
     //Load Photo from phone storage
     private void loadphoto()
     {
-        start=false;
+        start = false;
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -902,7 +1061,8 @@ public class MainActivity extends AppCompatActivity {
                         public void onSuccess(List<Face> faces) {
 
                             if(faces.size()!=0) {
-                                recognize.setText("Recognize");
+                                isRecognizing = false;
+                                recognize.setText("RECOGNIZED FACE");
                                 add_face.setVisibility(View.VISIBLE);
                                 reco_name.setVisibility(View.INVISIBLE);
                                 face_preview.setVisibility(View.VISIBLE);
@@ -945,7 +1105,7 @@ public class MainActivity extends AppCompatActivity {
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            start=true;
+                            start = true;
                             Toast.makeText(context, "Failed to add", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -960,13 +1120,84 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private Bitmap getBitmapFromUri(Uri uri) throws IOException {
-        ParcelFileDescriptor parcelFileDescriptor =
-                getContentResolver().openFileDescriptor(uri, "r");
+        ParcelFileDescriptor parcelFileDescriptor = getContentResolver().openFileDescriptor(uri, "r");
         FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
         Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
         parcelFileDescriptor.close();
         return image;
     }
 
-}
 
+    private void onFaceRecognized(String name, float distance, Recognition recognition, Bitmap bitmap) {
+
+        if(isRecognizing) {
+
+            double percentage = 0;
+
+            if(distance > 1) {
+                percentage = ((distance - 1)*100.0) - 20;
+                if(percentage < 0) percentage = 0;
+            }else {
+                percentage = (100 - (1 - distance)*100.0) + 10;
+                if(percentage > 100) percentage = 100;
+            }
+
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("id", "");
+            hashMap.put("name", name);
+            hashMap.put("gender", "");
+            hashMap.put("photo", "");
+            hashMap.put("percentage", (int) percentage);
+            hashMap.put("isRecognized", false);
+
+            if (recognition != null) {
+
+                findViewById(R.id.coordinatorLayout).setBackgroundColor(getResources().getColor(R.color.green));
+
+                hashMap.put("id", recognition.getId());
+                hashMap.put("name", recognition.getName());
+                hashMap.put("gender", recognition.getGender());
+                hashMap.put("isRecognized", true);
+
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] data = baos.toByteArray();
+
+                StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("face-"+(recognition.getName()+"-"+recognition.getId()).replace(" ", "")+".jpg");
+
+                UploadTask uploadTask = storageReference.putBytes(data);
+                Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                    @Override
+                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                        return storageReference.getDownloadUrl();
+                    }
+                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        String photo = "";
+                        if (task.isSuccessful()) {
+                            Uri downloadUri = task.getResult();
+                            photo = String.valueOf(downloadUri);
+                        } else {
+                            photo = "";
+                        }
+                        FirebaseDatabase.getInstance("https://ai-based-prison-management-default-rtdb.firebaseio.com").getReference("Face-Recognition-WebCAM").child("photo").setValue(photo);
+                    }
+                });
+
+            }else {
+                findViewById(R.id.coordinatorLayout).setBackgroundColor(getResources().getColor(R.color.red));
+            }
+
+            hashMap.put("distance", distance);
+            hashMap.put("time", Calendar.getInstance().getTime().getTime());
+
+            FirebaseDatabase.getInstance("https://ai-based-prison-management-default-rtdb.firebaseio.com").getReference("Face-Recognition-WebCAM").setValue(hashMap);
+
+        }else {
+            findViewById(R.id.coordinatorLayout).setBackgroundColor(getResources().getColor(R.color.black));
+        }
+
+    }
+
+}

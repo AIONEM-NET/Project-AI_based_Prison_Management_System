@@ -79,7 +79,7 @@ include "../config.php";
 </head>
 <body>
 <div class="container-scroller d-flex">
-    <nav class="sidebar sidebar-offcanvas" id="sidebar" style="background: #06579a;">
+    <nav class="sidebar sidebar-offcanvas" id="sidebar" style="display: none !important; background: #06579a;">
         <ul class="nav" style="position: fixed; margin-top: -0px;">
             <li class="nav-item sidebar-category hidden">
                 <p class="hidden">My ACCOUNT:
@@ -253,8 +253,8 @@ include "../config.php";
     </nav>
     <div class="container-fluid page-body-wrapper">
 
-        <div class="main-panel">
-            <div class="content-wrapper">
+        <div class="main-panel1">
+            <div class="content-wrapper1">
             <div class="row" id="Table">
                 <div class="col-lg-12 grid-margin stretch-card">
                     <div class="card" style="min-height: 600px;">
@@ -264,7 +264,7 @@ include "../config.php";
                             <div id="countVisitors" class="text-center" style="position: absolute; padding-top: 40px; margin-left: calc(0% + 10px); border-radius: 50%; width: 200px; height: 200px; background-color: #067628; color: #FFFFFF; font-size: 80px;">
                                 -/-
                             </div>
-                            <div onclick="counterStartStop()" id="countStartStop" class="text-center countStartStop" style="position: absolute; padding-top: 50px; margin-left: calc(50% - 100px); border-radius: 50%; width: 200px; height: 200px; background-color: #067628; color: #FFFFFF; font-size: 70px;">
+                            <div onclick="counterStartStop()" id="countStartStop" class="text-center countStartStop acc-P-Observer" style="position: absolute; padding-top: 50px; margin-left: calc(50% - 100px); border-radius: 50%; width: 200px; height: 200px; background-color: #067628; color: #FFFFFF; font-size: 70px;">
                                 START
                             </div>
                             <div id="countTimer" class="text-center" style="position: absolute; padding-top: 35px; margin-left: calc(100% - 240px); border-radius: 50%; width: 200px; height: 200px; background-color: #067628; color: #FFFFFF; font-size: 50px;">
@@ -272,7 +272,7 @@ include "../config.php";
                             </div>
                         </div>
 
-                        <div class="table-responsive" id="TableCard">
+                        <div class="table-responsive divMain" id="TableCard">
                                 <table id="dataTable" class="table table-striped display nowrap" style="width: 100%; min-height: 600px;">
                                     <thead>
                                     <tr>
@@ -280,7 +280,7 @@ include "../config.php";
                                             NO
                                         </th>
                                         <th class="text-center font-weight-bold">
-                                            PHOTO
+                                            VISITOR
                                         </th>
                                         <th class="text-center font-weight-bold">
                                             NAME
@@ -415,6 +415,12 @@ function counterStartStop() {
     counterStarted = counterStarted == true ? false : true;
     
     if(counterStarted == true) {
+
+        if(i <= 0) {
+            counterStarted = false;
+            alert("You cann not START the COUNTER without VISITORS !!!");
+            return;
+        }
         var date = new Date();
         
         var time = date.getTime();
@@ -487,11 +493,15 @@ function stopTime() {
 
     }
 
+    $(".divMain").addClass("is-loading");
+
     setTimeout(function() {
 
         isMarking = false;
 
         getData("", "", 0, 0);
+
+        $(".divMain").removeClass("is-loading");
 
     }, 5000);
 
@@ -511,14 +521,17 @@ var isDataTable = true;
 
   var presented = [];
 
+var t = 0;
+var i = 0;
+
 function getData(status, keyword, timeFrom, timeTo) {
 
   database.ref('Visits').orderByChild("time").limitToLast(max).on('value', function(snapshot) {
 
     var childCounts = snapshot.numChildren();
 
-    var t = 0;
-    var i = 0;
+    t = 0;
+    i = 0;
 
     var countAll = 0;
     var countMale = 0;
@@ -614,12 +627,12 @@ function getData(status, keyword, timeFrom, timeTo) {
             countIsRecognized++;
           }
           
-          html += '<td class="text-center"><img src="'+(childData.photo != null && (""+childData.photo).length !== 0 ? "../face-database/"+childData.photo+".png" : "../images/face_algorithm.png")+'"></td>';
-          html += '<td class="text-center">'+(childData.name != null && (""+childData.name).length !== 0 ? childData.name : "-")+'</td>';
+          html += '<td class="text-center"><img style="height: 100px; width: 100px;" src="'+(childData.photo != null && (""+childData.photo).length !== 0 ? childData.photo : "../images/test.jpg")+'"></td>';
+          html += '<td class="text-center" style="font-size: 30px; font-weight: bold;">'+(childData.name != null && (""+childData.name).length !== 0 ? childData.name : "-")+'</td>';
           <!--/* html += '<td class="text-center">'+(childData.phone != null && (""+childData.phone).length !== 0 ? childData.phone : "-")+'</td>'; */-->
           <!--/* html += '<td class="text-center">'+(childData.gender != null && (""+childData.gender).length !== 0 ? childData.gender : "-")+'</td>'; */-->
           <!--/* html += '<td class="text-center">'+(childData.location != null && (""+childData.location).length !== 0 ? childData.location : "-")+'</td>'; */-->
-          html += '<td class="text-center">'+(childData.prisoner != null && (""+childData.prisoner).length !== 0 ? childData.prisoner : "-")+'</td>';
+          html += '<td class="text-center" style="font-size: 30px; font-weight: bold;">'+(childData.prisoner != null && (""+childData.prisoner).length !== 0 ? childData.prisoner : "-")+'</td>';
           html += '<td class="text-center">'+(childData.time != null && (""+childData.time).length !== 0 ? new Date(childData.time).toString().substring(0, 21) : "-")+'</td>';
           <!--/* html += '<td class="text-center">'+(childData.packages != null && (""+childData.packages) !== 0 ? (childData.packages > 0 ? childData.packages : 1) : "-")+'</td>'; */-->
           <!--/* html += '<td class="text-center">'+((childData.isRecognized != null && childData.isRecognized == true) ? "YES" : "NO")+'</td>'; */-->
@@ -659,7 +672,7 @@ function getData(status, keyword, timeFrom, timeTo) {
             '                                                NO\n' +
             '                                            </th>\n' +
             '                                            <th class="text-center font-weight-bold">\n' +
-            '                                                PHOTO\n' +
+            '                                                VISITOR\n' +
             '                                            </th>\n' +
             '                                            <th class="text-center font-weight-bold">\n' +
             '                                                NAME\n' +

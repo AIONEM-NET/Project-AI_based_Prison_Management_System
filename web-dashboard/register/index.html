@@ -73,7 +73,7 @@ include "../config.php";
                     <span class="menu-title">Table</span>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item hidden">
                 <a class="nav-link" href="../dashboard/#Table">
                     <button class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px;">
                         <i class="mdi mdi-grid-large menu-icon"></i>
@@ -81,7 +81,7 @@ include "../config.php";
                     </button>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item hidden">
                 <a class="nav-link" href="../dashboard/#Graph">
                     <button class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px;">
                         <i class="mdi mdi-chart-pie menu-icon"></i>
@@ -89,7 +89,7 @@ include "../config.php";
                     </button>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item hidden">
                 <a class="nav-link" href="../dashboard/#Prisoners">
                     <button class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px;">
                         <i class="mdi mdi-account-group menu-icon"></i>
@@ -97,7 +97,7 @@ include "../config.php";
                     </button>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item hidden">
                 <a class="nav-link" href="../face-database/">
                     <button class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px;">
                         <i class="mdi mdi-face menu-icon"></i>
@@ -105,7 +105,7 @@ include "../config.php";
                     </button>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item hidden">
                 <a class="nav-link" href="../screen-projector/">
                     <button class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px;">
                         <i class="mdi mdi-projector-screen menu-icon"></i>
@@ -113,7 +113,7 @@ include "../config.php";
                     </button>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item hidden">
                 <a class="nav-link" href="../prisoner/">
                     <button class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px;">
                         <i class="mdi mdi-account-multiple-plus-outline menu-icon"></i>
@@ -126,6 +126,14 @@ include "../config.php";
                     <button class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px; background-color: #00bf78 !important; color: #FFFFFF !important;">
                         <i class="mdi mdi-account-multiple-plus-outline menu-icon"></i>
                         Visitor Register
+                    </button>
+                </a>
+            </li>
+            <li class="nav-item hidden">
+                <a class="nav-link" href="../packages/">
+                    <button class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px;">
+                        <i class="mdi mdi-account-multiple-plus-outline menu-icon"></i>
+                        Add Packages
                     </button>
                 </a>
             </li>
@@ -221,7 +229,7 @@ include "../config.php";
             <div class="text-center hidden">
                 <img src="../images/icon_website.png" style="width: 120px; border-radius: 50%; border: 2px solid #06579a; padding: 10px;"/>
             </div>
-            <li class="nav-item hidden" style="margin-top: 20px;">
+            <li class="nav-item" style="margin-top: 20px;">
                 <a class="nav-link" href="#All" onclick='getData("")'>
                     <button onclick="logout();" class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px;">
                         <i class="mdi mdi-logout menu-icon"></i>
@@ -242,11 +250,12 @@ include "../config.php";
                                 <div class="card" id="ScreenProjector" style="min-height: 500px;">
                                     <div class="card-body">
                                     <h2 class="card-title1 text-center" style="font-size: 30px; padding-top: 20px; padding-bottom: 20px; background-color: #06579a; color: #FFFFFF;">REGISTER VISITOR - <span style="font-size: 16px; color: #06579a; padding: 2px; border-radius: 10px; border: 2px solid #FFFFFF; background-color: #FFFFFF;">AI Prison Management System</span></h2>
-                                    <p class="text-muted"></p>
+                                    <h3 id="pName" class="text-center" style="font-size: 40px; font-weight: bold; margin-top: 20px"></h3>
+                                        <p class="text-muted"></p>
                                         <style>
 
                                         </style>
-                                        <div id="ScreenProjectorTable" style="margin-top: 50px;">
+                                        <div id="ScreenProjectorTable" style="margin-top: 20px;">
                                         <div class="row mb-3 text-center">
                                             <div id="div-register" class="col-md-12">
                                                 
@@ -283,12 +292,29 @@ include "../config.php";
                                                         }
                                                     </style>
                                                     <div class="text-center" style="margin-bottom: 30px;">
-                                                        <img src="../images/face_algorithm.png" style="height: 200px;">
-                                                        <img src="../images/test.jpg" style="position: fixed1; margin-right: 0px; height: 200px;">
+                                                        <div>
+                                                            <img id="imgFace" src="../images/face_algorithm.png" style="height: 200px;">
+                                                        </div>
+                                                        <div style="margin-top: -200px;">
+                                                            <img id="imgPerson" src="../images/test.jpg" style="position: absolute; margin-right: 0px; height: 200px;">
+                                                            <img id="imgPersonCross" src="" style="position: absolute; margin-right: 0px; height: 200px;">
+                                                        </div>
                                                     </div>
-                                                    <div>
+                                                    <div style="margin-top: 230px;">
                                                         <label class="register-visitor-label"> <i class="mdi mdi-face menu-icon"></i> Visitor Name</label>
                                                         <input class="register-visitor-input" type="text" name="name" id="name" placeholder="Enter visitor Name" required1>
+                                                    </div>
+                                                    <div>
+                                                        <label class="register-visitor-label"> <i class="mdi mdi-face menu-icon"></i> Visitor ID Number</label>
+                                                        <input class="register-visitor-input" type="number" name="id" id="id" placeholder="Enter visitor ID Number" required1>
+                                                    </div>
+                                                    <div>
+                                                        <label class="register-visitor-label"> <i class="mdi mdi-phone menu-icon"></i> Visitor Gender</label>
+                                                        <select class="register-visitor-input" name="gender" id="gender" required1>
+                                                            <option value="" selected>Select Gender</option>
+                                                            <option value="MALE">Male</option>
+                                                            <option value="FEMALE">Female</option>
+                                                        </select>
                                                     </div>
                                                     <div>
                                                         <label class="register-visitor-label"> <i class="mdi mdi-phone menu-icon"></i> Visitor Phone</label>
@@ -330,20 +356,12 @@ include "../config.php";
                                                         </select>
                                                     </div>
                                                     <div>
-                                                        <label class="register-visitor-label"> <i class="mdi mdi-phone menu-icon"></i> Visitor Gender</label>
-                                                        <select class="register-visitor-input" name="gender" id="gender" required1>
-                                                            <option value="" selected>Select Gender</option>
-                                                            <option value="Male">Male</option>
-                                                            <option value="Female">Female</option>
-                                                        </select>
-                                                    </div>
-                                                    <div>
                                                         <label class="register-visitor-label"> <i class="mdi mdi-phone menu-icon"></i> Prisoner Name <span id="prisonerLoader" style="width: 30px; height: 30px; margin-left: 50px;"></span> </label>
                                                         <select class="register-visitor-input" name="prisoner" id="prisoner" required1>
                                                             <option value="" selected>Select Prisoner</option>
                                                         </select>
                                                     </div>
-                                                    <div>
+                                                    <div class="hidden">
                                                         <label class="register-visitor-label"> <i class="mdi mdi-phone menu-icon"></i> Visitor Packages</label>
                                                         <select style="height: 200px;" class="register-visitor-input" name="packages" id="packages" multiple required1>
                                                             <option value="" selected>Select Packages</option>
@@ -352,11 +370,11 @@ include "../config.php";
                                                             <option value="Cleaning Materials" selected>-> Cleaning Materials</option>
                                                         </select>
                                                     </div>
-                                                    <div>
+                                                    <div class="hidden">
                                                         <label class="register-visitor-label"> <i class="mdi mdi-phone menu-icon"></i> Package Money</label>
                                                         <input class="register-visitor-input" type="number" name="packagesMoney" id="packagesMoney" placeholder="Enter Amount" required1>
                                                     </div>
-                                                    <div>
+                                                    <div class="hidden">
                                                         <label class="register-visitor-label"> <i class="mdi mdi-phone menu-icon"></i> Other Packages</label>
                                                         <input class="register-visitor-input" type="text" name="packagesOther" id="packagesOther" placeholder="Enter Other Packages" required1>
                                                     </div>
@@ -422,15 +440,16 @@ include "../config.php";
 <script>
 
 var date = new Date();
-
 var time = date.getTime() - date.getMilliseconds();
-
 $("#date").val(date.toUTCString())
 
     
 var name1 = getUrlParameter('name');
 var gender1 = getUrlParameter('gender');
-var isRecongized = getUrlParameter('recongized') == 'true' ? true : false;
+var isRecognized = getUrlParameter('recognized') == 'true' ? true : false;
+
+var photo = "";
+var percentage = "";
 
 if(!isEmpty(name1)) {
     $("#name").val(name1);
@@ -441,10 +460,17 @@ if(!isEmpty(gender1)) {
     $("#gender").attr('disabled', true);
 }
 
+$("#packages").val("").change();
+
+
+var isRegistering = false;
+
 $("#form-register").on('submit', function(event){
     event.preventDefault();
 
+    if(isRegistering) return;
 
+    var id = $("#id").val();
     var name = $("#name").val();
     var phone = $("#phone").val();
     var location = $("#location").val();
@@ -470,45 +496,69 @@ $("#form-register").on('submit', function(event){
         packagesList = packagesList +"Others: "+ packagesOther + "\n";
     }
 
+    if(isEmpty(id)) {
+        showToast("ID Number required", "", "");
+        return;
+    }
+    if((""+id).length !== 16) {
+        showToast("Invalid ID Number", "", "");
+        return;
+    }
+    if( (!(""+id).startsWith("119") && !(""+id).startsWith("120")) ) {
+        showToast("Invalid ID Number", "", "");
+        return;
+    }
     if(isEmpty(name)) {
         showToast("Name required", "", "");
-        return;
-    }
-    if(isEmpty(phone)) {
-        showToast("Phone required", "", "");
-        return;
-    }
-    if(isEmpty(location)) {
-        showToast("Location required", "", "");
         return;
     }
     if(isEmpty(gender)) {
         showToast("Gender required", "", "");
         return;
     }
+    if(isEmpty(phone)) {
+        showToast("Phone required", "", "");
+        return;
+    }
+    if((""+phone).length !== 10) {
+        showToast("Invalid Phone", "", "");
+        return;
+    }
+    if( (!(""+phone).startsWith("078") && !(""+phone).startsWith("079") && !(""+phone).startsWith("072") && !(""+phone).startsWith("073")) ) {
+        showToast("Invalid Phone", "", "");
+        return;
+    }
+    if(isEmpty(location)) {
+        showToast("Location required", "", "");
+        return;
+    }
     if(isEmpty(prisoner)) {
         showToast("Prisoner required", "", "");
         return;
     }
-    if(isEmpty(packages)) {
-        showToast("Packages required", "", "");
-        return;
-    }
+    // if(isEmpty(packages)) {
+    //     showToast("Packages required", "", "");
+    //     return;
+    // }
     if(isEmpty(date)) {
         showToast("Date required", "", "");
         return;
     }
 
+    isRegistering = true;
     
     $("#div-register").addClass("is-loading");
 
 
-    var id = time/100;
+    var uid = time/100;
 
     
     var visit_data = {};
+    visit_data["id"] = id;
+    visit_data["uid"] = uid;
     visit_data["name"] = name;
     visit_data["phone"] = phone;
+    visit_data["photo"] = photo;
     visit_data["location"] = location;
     visit_data["gender"] = gender;
     visit_data["location"] = location;
@@ -518,16 +568,19 @@ $("#form-register").on('submit', function(event){
     visit_data["packagesOther"] = packagesOther;
     visit_data["packagesMoney"] = packagesMoney;
     visit_data["time"] = time;
-    visit_data["isRecongized"] = isRecongized;
+    visit_data["percentage"] = percentage;
+    visit_data["isRecognized"] = isRecognized;
 
     database.ref('Visits').child(id).set(visit_data);
+    database.ref('Data-Entry-Packages').set(visit_data);
 
     setTimeout(function() {
         $("#div-register").removeClass("is-loading");
-        showToast("Vistor Registerd Successfuly", "", "");
+        showToast("Visitor Registered Successfully", "", "");
     }, 3000);
 
     setTimeout(function() {
+        database.ref('Face-Recognition-WebCAM').set("");
         window.location.replace("");
     }, 5000);
 
@@ -560,17 +613,74 @@ database.ref('Prisoners').orderByChild("time").on('value', function(snapshot) {
 
       if(childData.isImprisoned == true) {
             i++;
-            htmlAll = htmlAll + '<option class="register-visitor-input-select-option" value="'+childData.name+'" selected>'+childData.name+'</option>';
+            htmlAll = htmlAll + '<option class="register-visitor-input-select-option" value="'+childData.name+'" selected>'+(childData.name +" ("+ childData.gender +" - "+ childData.location +")")+'</option>';
       }
 
       if(t == childCounts) {
         $("#prisoner").html(htmlAll);
 
         $("#prisonerLoader").removeClass("is-loading");
+
+        $("#prisoner").val("").change();
       }
 
 
     });
+
+});
+
+
+database.ref('Face-Recognition-WebCAM').on('value', function(snapshot) {
+
+    var childCounts = snapshot.numChildren();
+    var childData = snapshot.val();
+
+    $("#id").val(childData.id)
+    $("#name").val(childData.name)
+    $("#gender").val(childData.gender).change();
+
+    photo = childData.photo;
+    isRecognized = childData.isRecognized;
+
+    if(isRecognized) {
+
+        $("#id").attr('disabled', true);
+        $("#name").attr('disabled', true);
+        $("#gender").attr('disabled', true);
+
+        $("#ScreenProjector").css('background-color', "rgba(2,112,30,0.36)");
+
+        if(!isEmpty(childData.photo)) {
+            $("#imgPerson").attr("src", childData.photo);
+        }else {
+            $("#imgPerson").attr("src", "../images/test.jpg");
+        }
+        $("#imgPersonCross").attr("src", "../images/green.png");
+
+    }else {
+
+        $("#id").attr('disabled', false);
+        $("#name").attr('disabled', false);
+        $("#gender").attr('disabled', false);
+
+        $("#imgPerson").attr("src", "../images/test.jpg");
+
+        if(!isEmpty(isRecognized)) {
+            $("#ScreenProjector").css('background-color', "rgba(194,6,6,0.51)");
+            $("#imgPersonCross").attr("src", "../images/red.png");
+        }
+
+    }
+
+    if(!isEmpty(isRecognized)) {
+
+        percentage = childData.percentage;
+
+        $("#pName").html("<u>DECISION</u>: "+" ( "+ childData.percentage +"% ) : "+ childData.name)
+
+        var date = new Date(childData.time);
+        $("#date").val(date.toUTCString())
+    }
 
 });
 

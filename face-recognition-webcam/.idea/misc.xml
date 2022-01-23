@@ -4,7 +4,8 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Software/SERVER/htdocs/AIONEM.NET_Job/CST_2021_Artificial_Intelligence_based_Prison_Management_System/face-recognition-webcam/app/src/main/res/drawable-v24/round_bg.xml" value="0.228125" />
-        <entry key="..\:/Software/SERVER/htdocs/AIONEM.NET_Job/CST_2021_Artificial_Intelligence_based_Prison_Management_System/face-recognition-webcam/app/src/main/res/layout/activity_main.xml" value="0.5243619489559165" />
+        <entry key="..\:/Software/SERVER/htdocs/AIONEM.NET_Job/CST_2021_Artificial_Intelligence_based_Prison_Management_System/face-recognition-webcam/app/src/main/res/drawable/round_bg.xml" value="0.2421875" />
+        <entry key="..\:/Software/SERVER/htdocs/AIONEM.NET_Job/CST_2021_Artificial_Intelligence_based_Prison_Management_System/face-recognition-webcam/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Software/SERVER/htdocs/AIONEM.NET_Job/CST_2021_Artificial_Intelligence_based_Prison_Management_System/face-recognition-webcam/app/src/main/res/layout/activity_splash_screen.xml" value="0.20871794871794871" />
       </map>
     </option>

@@ -51,6 +51,24 @@ include "../config.php";
             border-radius: 10px;
         }
 
+
+        .recognized-yes {
+            color: #FFFFFF;
+            font-weight: bold;
+            padding: 10px;
+            background-color: rgba(12, 132, 70, 0.87);
+            border-radius: 10px;
+            border: solid 2px rgba(12, 132, 70, 0.87)
+        }
+        .recognized-no {
+            color: #FFFFFF;
+            font-weight: bold;
+            padding: 10px;
+            background-color: #e30719;
+            border-radius: 10px;
+            border: solid 2px #e30719
+        }
+
         .imprisoned-yes {
             color: #FFFFFF;
             font-weight: bold;
@@ -68,7 +86,7 @@ include "../config.php";
             border: solid 2px rgba(12, 132, 70, 0.87)
         }
 
-        .status-completed {
+        .status-completed:hover {
             color: #FFFFFF;
             font-weight: bold;
             padding: 10px;
@@ -76,7 +94,7 @@ include "../config.php";
             border-radius: 10px;
             border: solid 2px #e30719
         }
-        .status-completed:hover {
+        .status-completed {
             color: #e30719;
             font-weight: bold;
             padding: 10px;
@@ -84,7 +102,7 @@ include "../config.php";
             border-radius: 10px;
             border: solid 2px #e30719
         }
-        .status-waiting {
+        .status-waiting:hover {
             color: #FFFFFF;
             font-weight: bold;
             padding: 10px;
@@ -92,7 +110,7 @@ include "../config.php";
             border-radius: 10px;
             border: solid 2px rgba(12, 132, 70, 0.87)
         }
-        .status-yes:waiting {
+        .status-yes {
             color: rgba(12, 132, 70, 0.87);
             font-weight: bold;
             padding: 10px;
@@ -177,7 +195,7 @@ include "../config.php";
                     </button>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item hidden">
                 <a class="nav-link" href="../face-database/">
                     <button class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px;">
                         <i class="mdi mdi-face menu-icon"></i>
@@ -244,10 +262,10 @@ include "../config.php";
               </span>
                     <span class="acc-isAuth">
               <a sty class="nav-link1" href="#scan" onclick='getData("", "isFace")'>
-                <button class="btn bg-danger btn-sm menu-title text-center" style="min-width: 50px; background-color: #c96405 !important; color: #FFFFFF; font-weight: bold;">SCAN</button>
+                <button class="btn bg-danger btn-sm menu-title text-center" style="min-width: 50px; background-color: #c96405 !important; color: #FFFFFF; font-weight: bold;">RECOGNIZED</button>
               </a>
           </span>
-            <li class="nav-item text-center" style="margin-top: 10px;">
+            <li class="nav-item text-center hidden" style="margin-top: 10px;">
                 <a class="nav-link1 text-center" href="#2hrs" onclick='filterDate(7200000)'>
                     <span class="btn bg-primary btn-sm menu-title text-center" style="width: 70px; font-weight: bold; background-color: #c96405 !important; color: #FFFFFF !important;">
                         <!-- <i class="mdi mdi-logout menu-icon"></i> -->
@@ -271,7 +289,7 @@ include "../config.php";
                     </a>
                 </span>
             </li>
-            <li class="nav-item text-center" style="margin-top: 10px;">
+            <li class="nav-item text-center hidden" style="margin-top: 10px;">
                 <a class="nav-link1 text-center" href="#Today" onclick='filterDate(86400000)'>
                     <span class="btn bg-primary btn-sm menu-title text-center" style="width: 80px; font-weight: bold; background-color: #c96405 !important; color: #FFFFFF !important;">
                         <!-- <i class="mdi mdi-logout menu-icon"></i> -->
@@ -287,7 +305,7 @@ include "../config.php";
                     </a>
                 </span>
             </li>
-            <li class="nav-item text-center" style="margin-top: 10px;">
+            <li class="nav-item text-center hidden" style="margin-top: 10px;">
                 <a class="nav-link1 text-center" href="#Month" onclick='filterDate(2592000000)'>
                     <span class="btn bg-primary btn-sm menu-title text-center" style="width: 80px; font-weight: bold; background-color: #c96405 !important; color: #FFFFFF !important;">
                         <!-- <i class="mdi mdi-logout menu-icon"></i> -->
@@ -324,7 +342,7 @@ include "../config.php";
                     <div class="col-lg-12 grid-margin stretch-card">
                         <div class="card" style="min-height: 600px;">
                             <div class="card-body">
-                            <h2 class="card-title1 text-center" style="font-size: 30px; padding-top: 20px; padding-bottom: 20px; background-color: #06579a; color: #FFFFFF;">VISITORS' RECORDS - <span style="font-size: 16px; color: #06579a; padding: 2px; border-radius: 10px; border: 2px solid #FFFFFF; background-color: #FFFFFF;">AI Prison Management System</span> <a class="btn" href="../register/" style="font-size: 16px; color: #FFFFFF; padding: 2px; border-radius: 10px; border: 2px solid #FFFFFF; background-color: #06579a; margin-left: 100px;">+ Register Visitor</a></h2>
+                            <h2 class="card-title1 text-center" style="font-size: 30px; padding-top: 20px; padding-bottom: 20px; background-color: #06579a; color: #FFFFFF;">VISITORS' RECORDS - <span style="font-size: 16px; color: #06579a; padding: 2px; border-radius: 10px; border: 2px solid #FFFFFF; background-color: #FFFFFF;">AI Prison Management System</span> <a class="btn acc-P-Observer" href="../register/" style="font-size: 16px; color: #FFFFFF; padding: 2px; border-radius: 10px; border: 2px solid #FFFFFF; background-color: #06579a; margin-left: 100px;">+ Register Visitor</a></h2>
                             <div class="table-responsive" id="TableCard">
                                     <table id="dataTable" class="table table-striped display nowrap" style="width: 100%; min-height: 600px;">
                                         <thead>
@@ -351,13 +369,13 @@ include "../config.php";
                                                 PRISONER
                                             </th>
                                             <th class="text-center font-weight-bold">
+                                                FACE RECOGNIZED
+                                            </th>
+                                            <th class="text-center font-weight-bold">
                                                 DATE
                                             </th>
                                             <th class="text-center font-weight-bold">
                                                 PACKAGES
-                                            </th>
-                                            <th class="text-center font-weight-bold">
-                                                FACE RECOGNIZED
                                             </th>
                                             <th class="text-center font-weight-bold">
                                                 STATUS
@@ -432,7 +450,7 @@ include "../config.php";
                     <div class="col-lg-12 grid-margin stretch-card">
                         <div class="card" style="min-height: 600px;">
                             <div class="card-body">
-                                <h2 class="card-title1 text-center" style="font-size: 30px; padding-top: 20px; padding-bottom: 20px; background-color: #06579a; color: #FFFFFF;">LIST of PRISONERS - <span style="font-size: 16px; color: #06579a; padding: 2px; border-radius: 10px; border: 2px solid #FFFFFF; background-color: #FFFFFF;">AI Prison Management System</span> <a class="btn" href="../prisoner/" style="font-size: 16px; color: #FFFFFF; padding: 2px; border-radius: 10px; border: 2px solid #FFFFFF; background-color: #06579a; margin-left: 100px;">+ Add Prisoner</a></h2>
+                                <h2 class="card-title1 text-center" style="font-size: 30px; padding-top: 20px; padding-bottom: 20px; background-color: #06579a; color: #FFFFFF;">LIST of PRISONERS - <span style="font-size: 16px; color: #06579a; padding: 2px; border-radius: 10px; border: 2px solid #FFFFFF; background-color: #FFFFFF;">AI Prison Management System</span> <a class="btn acc-P-Observer" href="../prisoner/" style="font-size: 16px; color: #FFFFFF; padding: 2px; border-radius: 10px; border: 2px solid #FFFFFF; background-color: #06579a; margin-left: 100px;">+ Add Prisoner</a></h2>
                                 <div class="table-responsive" id="TableCardPrisoners">
                                     <table id="dataTablePrisoners" class="table table-striped display nowrap" style="width: 100%; min-height: 600px;">
                                         <thead>

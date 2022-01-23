@@ -72,7 +72,7 @@ include "../config.php";
                     <span class="menu-title">Table</span>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item hidden">
                 <a class="nav-link" href="../dashboard/#Table">
                     <button class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px;">
                         <i class="mdi mdi-grid-large menu-icon"></i>
@@ -80,7 +80,7 @@ include "../config.php";
                     </button>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item hidden">
                 <a class="nav-link" href="../dashboard/#Graph">
                     <button class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px;">
                         <i class="mdi mdi-chart-pie menu-icon"></i>
@@ -88,7 +88,7 @@ include "../config.php";
                     </button>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item hidden">
                 <a class="nav-link" href="../dashboard/#Prisoners">
                     <button class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px;">
                         <i class="mdi mdi-account-group menu-icon"></i>
@@ -96,7 +96,7 @@ include "../config.php";
                     </button>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item hidden">
                 <a class="nav-link" href="../face-database/">
                     <button class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px;">
                         <i class="mdi mdi-face menu-icon"></i>
@@ -104,7 +104,7 @@ include "../config.php";
                     </button>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item hidden">
                 <a class="nav-link" href="../screen-projector/">
                     <button class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px;">
                         <i class="mdi mdi-projector-screen menu-icon"></i>
@@ -120,11 +120,19 @@ include "../config.php";
                     </button>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item hidden">
                 <a class="nav-link" href="../register/">
                     <button class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px;">
                         <i class="mdi mdi-account-multiple-plus-outline menu-icon"></i>
                         Visitor Registor
+                    </button>
+                </a>
+            </li>
+            <li class="nav-item hidden">
+                <a class="nav-link" href="../packages/">
+                    <button class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px;">
+                        <i class="mdi mdi-account-multiple-plus-outline menu-icon"></i>
+                        Add Packages
                     </button>
                 </a>
             </li>
@@ -220,7 +228,7 @@ include "../config.php";
             <div class="text-center hidden">
                 <img src="../images/icon_website.png" style="width: 120px; border-radius: 50%; border: 2px solid #06579a; padding: 10px;"/>
             </div>
-            <li class="nav-item hidden" style="margin-top: 20px;">
+            <li class="nav-item" style="margin-top: 20px;">
                 <a class="nav-link" href="#All" onclick='getData("")'>
                     <button onclick="logout();" class="btn bg-primary btn-sm menu-title text-center" style="min-width: 170px;">
                         <i class="mdi mdi-logout menu-icon"></i>
@@ -277,7 +285,7 @@ include "../config.php";
                                                     </style>
                                                     <div class="text-center" style="margin-bottom: 30px;">
                                                         <!--/* <img src="../images/face_algorithm.png" style="height: 200px;"> */-->
-                                                        <img src="../images/test.jpg" style="position: fixed1; margin-right: 0px; height: 200px;">
+                                                        <img src="../images/prisoner.jpg" style="position: fixed1; margin-right: 0px; height: 200px;">
                                                     </div>
                                                     <div>
                                                         <label class="register-visitor-label"> <i class="mdi mdi-face menu-icon"></i> Prisoner Name</label>
@@ -406,82 +414,81 @@ include "../config.php";
     $("#date").val(date.toUTCString())
 
 
-$("#form-register").on('submit', function(event){
-    event.preventDefault();
+    $("#form-register").on('submit', function(event){
+        event.preventDefault();
 
-    var name = $("#name").val();
-    var phone = $("#phone").val();
-    var location = $("#location").val();
-    var gender = $("#gender").val();
-    var parent = $("#parent").val();
-    var packages = $("#packages").val();
-    var date = $("#date").val();
+        var name = $("#name").val();
+        var phone = $("#phone").val();
+        var location = $("#location").val();
+        var gender = $("#gender").val();
+        var parent = $("#parent").val();
+        var packages = $("#packages").val();
+        var date = $("#date").val();
 
-    if(isEmpty(name)) {
-        showToast("Name required", "", "");
-        return;
-    }
-    if(isEmpty(phone)) {
-        showToast("Phone required", "", "");
-        return;
-    }
-    if(isEmpty(location)) {
-        showToast("Location required", "", "");
-        return;
-    }
-    if(isEmpty(gender)) {
-        showToast("Gender required", "", "");
-        return;
-    }
-    if(isEmpty(parent)) {
-        showToast("Parent required", "", "");
-        return;
-    }
-    if(isEmpty(packages)) {
-        showToast("Packages required", "", "");
-        return;
-    }
-    if(isEmpty(date)) {
-        showToast("Date required", "", "");
-        return;
-    }
-
-    
-    $("#div-register").addClass("is-loading");
-
-
-    var id = time/100;
-
-    
-    var visit_data = {};
-    visit_data["name"] = name;
-    visit_data["phone"] = phone;
-    visit_data["location"] = location;
-    visit_data["gender"] = gender;
-    visit_data["location"] = location;
-    visit_data["parent"] = parent;
-    visit_data["packages"] = packages;
-    visit_data["time"] = time;
-    visit_data["isImprisoned"] = true;
-
-    database.ref('Prisoners').child(id).set(visit_data);
-
-    setTimeout(function() {
-        $("#div-register").removeClass("is-loading");
-        showToast("Prisoner Registerd Successfuly", "", "");
-    }, 3000);
-
-    setTimeout(function() {
-        var isConfirmed = confirm("Do you want to Add another Prisoner?");
-        if(isConfirmed) {
-            window.location.replace("");
-        }else {
-            window.location.replace("../dashboard/#Prisoners");
+        if(isEmpty(name)) {
+            showToast("Name required", "", "");
+            return;
         }
-    }, 3000);
+        if(isEmpty(phone)) {
+            showToast("Phone required", "", "");
+            return;
+        }
+        if(isEmpty(location)) {
+            showToast("Location required", "", "");
+            return;
+        }
+        if(isEmpty(gender)) {
+            showToast("Gender required", "", "");
+            return;
+        }
+        if(isEmpty(parent)) {
+            showToast("Parent required", "", "");
+            return;
+        }
+        if(isEmpty(packages)) {
+            showToast("Packages required", "", "");
+            return;
+        }
+        if(isEmpty(date)) {
+            showToast("Date required", "", "");
+            return;
+        }
 
 
-});
+        $("#div-register").addClass("is-loading");
+
+
+        var id = time/100;
+
+
+        var visit_data = {};
+        visit_data["name"] = name;
+        visit_data["phone"] = phone;
+        visit_data["location"] = location;
+        visit_data["gender"] = gender;
+        visit_data["location"] = location;
+        visit_data["parent"] = parent;
+        visit_data["packages"] = packages;
+        visit_data["time"] = time;
+        visit_data["isImprisoned"] = true;
+
+        database.ref('Prisoners').child(id).set(visit_data);
+
+        setTimeout(function() {
+            $("#div-register").removeClass("is-loading");
+            showToast("Prisoner Registerd Successfuly", "", "");
+        }, 3000);
+
+        setTimeout(function() {
+            var isConfirmed = confirm("Do you want to Add another Prisoner?");
+            if(isConfirmed) {
+                window.location.replace("");
+            }else {
+                window.location.replace("../dashboard/#Prisoners");
+            }
+        }, 3000);
+
+    });
 
 </script>
 
