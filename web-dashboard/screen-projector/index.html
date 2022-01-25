@@ -12,7 +12,7 @@ include "../config.php";
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title id="title">Artificial Intelligence based Prison Management System</title>
+    <title id="title">Projector - Artificial Intelligence based Prison Management System</title>
     <link rel="stylesheet" href="../vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="../vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
@@ -463,8 +463,6 @@ function counterStartStop() {
         
         $('#countTimer').html(1+" Min" +"<br>"+ "00 Sec");
 
-        clearInterval(functionInterval);
-
         $('#countStartStop').css('background-color', '#067628');
         $('#countStartStop').html('START');
 
@@ -476,18 +474,22 @@ var isMarking = false;
 
 function stopTime() {
     
+    clearInterval(functionInterval);
+
+    if(isMarking) return;
+
     isMarking = true;
 
     console.log(presented);
 
-    for(let i = 0; i < maxVisitors; i++) {
+    for(let i = 0; i <= maxVisitors; i++) {
         
         var id = presented[""+i];
 
         // alert(id);
 
         if(!isEmpty(id)) {
-        
+
             database.ref('Visits').child(id).child('status').set("done");
         }
 
@@ -499,11 +501,12 @@ function stopTime() {
 
         isMarking = false;
 
-        getData("", "", 0, 0);
+        // getData("", "", 0, 0);
+        window.location.replace("");
 
         $(".divMain").removeClass("is-loading");
 
-    }, 5000);
+    }, 10000);
 
 }
 

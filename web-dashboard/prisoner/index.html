@@ -346,7 +346,7 @@ include "../config.php";
                                                         <label class="register-visitor-label"> <i class="mdi mdi-phone menu-icon"></i> Prisoner Packages</label>
                                                         <input class="register-visitor-input" type="number" name="packages" id="packages" vlaue="0" placeholder="Enter Prisoner Packages" required1>
                                                     </div>
-                                                    <div>
+                                                    <div class="hidden">
                                                         <label class="register-visitor-label"> <i class="mdi mdi-phone menu-icon"></i> Imprisoned Date</label>
                                                         <input class="register-visitor-input" type="datetime" name="date" id="date" placeholder="Select imprisoned Date" disabled required1>
                                                     </div>
@@ -446,8 +446,8 @@ include "../config.php";
             return;
         }
         if(isEmpty(packages)) {
-            showToast("Packages required", "", "");
-            return;
+            // showToast("Packages required", "", "");
+            // return;
         }
         if(isEmpty(date)) {
             showToast("Date required", "", "");
@@ -480,12 +480,16 @@ include "../config.php";
         }, 3000);
 
         setTimeout(function() {
-            var isConfirmed = confirm("Do you want to Add another Prisoner?");
-            if(isConfirmed) {
-                window.location.replace("");
-            }else {
-                window.location.replace("../dashboard/#Prisoners");
-            }
+	    alert("Prisoner added successfully.");
+        window.location.replace("");
+
+            // var isConfirmed = confirm("Prisoner added successfully.");
+            // if(isConfirmed) {
+                // window.location.replace("");
+            // }else {
+                // window.location.replace("");
+                // window.location.replace("../dashboard/#Prisoners");
+            // }
         }, 3000);
 
     });

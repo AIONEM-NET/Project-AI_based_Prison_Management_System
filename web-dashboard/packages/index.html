@@ -569,7 +569,7 @@ $("#form-register").on('submit', function(event){
     visit_data["gender"] = gender;
     visit_data["location"] = location;
     visit_data["prisoner"] = prisoner;
-    visit_data["packages"] = packages;
+    visit_data["packages"] = packages.length;
     visit_data["packagesList"] = packagesList;
     visit_data["packagesOther"] = packagesOther;
     visit_data["packagesMoney"] = packagesMoney;
@@ -652,6 +652,8 @@ database.ref('Data-Entry-Packages').on('value', function(snapshot) {
     isRecognized = childData.isRecognized;
 
     if(isRecognized) {
+
+        percentage = childData.percentage;
 
         $("#id").attr('disabled', true);
         $("#name").attr('disabled', true);

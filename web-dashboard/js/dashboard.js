@@ -102,6 +102,8 @@ function getData(status, keyword, timeFrom, timeTo) {
     var countWithPackages = 0;
     var countIsRecognized = 0;
     var countPackages = 0;
+    var dataGraph = [];
+    var dataGraphY = [];
 
     snapshot.forEach(function(childSnapshot) {
 
@@ -156,18 +158,22 @@ function getData(status, keyword, timeFrom, timeTo) {
 
           countAll++;
 
-          if((""+childData.gender) == "Male") {
+          if((""+childData.gender) == "MALE") {
             countMale++;
           }
-          if((""+childData.gender) == "Female") {
+          if((""+childData.gender) == "FEMALE") {
             countFemale++;
           }
+
 
           var html = "";
 
           html += "<tr>";
           html += '<td class="text-center">'+(childCounts-i+1)+'</td>';
           if(childData.packages !== null && childData.packages > 0) {
+            // countWithPackages++;
+          }
+          if(childData.status !== null && childData.status != "done") {
             countWithPackages++;
           }
           if(childData.packages !== null && childData.packages > 0) {
@@ -175,6 +181,8 @@ function getData(status, keyword, timeFrom, timeTo) {
           }
           if(childData.isRecognized !== null && childData.isRecognized == true) {
             countIsRecognized++;
+            dataGraphY[i-1] = i;
+            dataGraph[i-1] = (childData.percentage != null && (""+childData.percentage).length > 0 ? childData.percentage : 0);
           }
 
           html += '<td class="text-center"><img style="height: 70px; width: 70px;" src="'+(childData.photo != null && (""+childData.photo).length !== 0 ? childData.photo : "../images/test.jpg")+'"></td>';
@@ -186,7 +194,7 @@ function getData(status, keyword, timeFrom, timeTo) {
           html += '<td class="text-center">'+'<div class="text-center recognized-'+((childData.isRecognized != null && childData.isRecognized == true) ? "yes" : "no")+'">'+((childData.isRecognized != null && childData.isRecognized == true) ? "YES" : "NO")+'</div></td>';
           html += '<td class="text-center">'+(childData.time != null && (""+childData.time).length !== 0 ? new Date(childData.time).toString().substring(0, 21) : "-")+'</td>';
           html += '<td class="text-center">'+(childData.packages != null && (""+childData.packages) !== 0 ? (childData.packages > 0 ? childData.packages : 1) : "-")+'</td>';
-          html += '<td class="text-center" id="visit-status-'+childKey+'" onclick1="visitStatus(\''+childKey+'\''+', \''+childData.name+'\''+', \''+childData.status+'\')"><div class="text-center status-'+((childData.status != null && childData.status == 'done') ? "completed" : "waiting")+'">'+((childData.status != null && childData.status == 'done') ? "COMPLETED" : "WAITING")+'</div></td>';
+          html += '<td class="text-center" id="visit-status-'+childKey+'" onclick1="visitStatus(\''+childKey+'\''+', \''+childData.name+'\''+', \''+childData.status+'\')"><div class="text-center status-'+((childData.status != null && childData.status == 'done') ? "completed" : "waiting")+'">'+((childData.status != null && childData.status == 'done') ? "LEFT" : "WAITING")+'</div></td>';
 
           html += "</tr>";
 
@@ -213,6 +221,7 @@ function getData(status, keyword, timeFrom, timeTo) {
         $("#countPackages").html(countPackages);
         $("#countIsRecognized").html(countIsRecognized);
 
+        console.log(dataGraph);
 
         $("#TableCard").html('');
         $("#TableCard").html('<table id="dataTable" class="table table-striped display nowrap" style="width:100%">\n' +
@@ -299,7 +308,7 @@ function getData(status, keyword, timeFrom, timeTo) {
                   backgroundColor: '#b6047e'
                 },
                 {
-                  label: 'With Packages',
+                  label: 'Waiting',
                   data: [countWithPackages],
                   backgroundColor: '#e0d12e'
                 },
@@ -372,6 +381,54 @@ function getData(status, keyword, timeFrom, timeTo) {
             },
           });
         }
+
+        
+
+
+        const dataChartLine2 = {
+          labels: dataGraphY,
+          datasets: [{
+            axis: 'x',
+            label: 'Desicison Accuraccy Graph',
+            data: dataGraph,
+            fill: false,
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+              'rgba(255, 205, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(201, 203, 207, 0.2)'
+            ],
+            borderColor: [
+              'rgb(255, 99, 132)',
+              'rgb(255, 159, 64)',
+              'rgb(255, 205, 86)',
+              'rgb(75, 192, 192)',
+              'rgb(54, 162, 235)',
+              'rgb(153, 102, 255)',
+              'rgb(201, 203, 207)'
+            ],
+            borderWidth: 1
+          }]
+        };
+        const configChartLine2 = {
+          type: 'line',
+          data: dataChartLine2,
+          options: {
+            indexAxis: 'x',
+            scales: {
+              x: {
+                beginAtZero: true
+              }
+            }
+          }
+        };
+        const chartLine2 = new Chart(
+          document.getElementById('chartLine2'),
+          configChartLine2
+        );
 
       }
 
@@ -742,8 +799,8 @@ function getData(status, keyword, timeFrom, timeTo) {
 
 $("#accountType").html(userName.toUpperCase());
 $("#accountName").html(userName.toUpperCase());
-$("#title").html(userName.toUpperCase() + " - AI Prison Management System");
-$("#title").html("Demo - AI Prison Management System");
+// $("#title").html(userName.toUpperCase() + " - AI Prison Management System");
+// $("#title").html("Demo - AI Prison Management System");
 
 if(userName == "isAdmin") {
   $(".acc-isSecurity").addClass("hidden");

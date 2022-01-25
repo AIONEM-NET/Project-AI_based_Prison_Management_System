@@ -102,6 +102,14 @@ include "../config.php";
             border-radius: 10px;
             border: solid 2px #e30719
         }
+        .status-waiting {
+            color: #FFFFFF;
+            font-weight: bold;
+            padding: 10px;
+            background-color: rgba(12, 132, 70, 0.87);
+            border-radius: 10px;
+            border: solid 2px rgba(12, 132, 70, 0.87)
+        }
         .status-waiting:hover {
             color: #FFFFFF;
             font-weight: bold;
@@ -265,6 +273,14 @@ include "../config.php";
                 <button class="btn bg-danger btn-sm menu-title text-center" style="min-width: 50px; background-color: #c96405 !important; color: #FFFFFF; font-weight: bold;">RECOGNIZED</button>
               </a>
           </span>
+          <li class="nav-item text-center" style="margin-top: 10px;">
+              <a class="nav-link1 text-center" href="#clearAllData" onclick='clearAllData()'>
+                  <span class="btn bg-primary btn-sm menu-title text-center" style="width: 150px; font-weight: bold; background-color: #ff0000 !important; color: #FFFFFF !important;">
+                      <!-- <i class="mdi mdi-logout menu-icon"></i> -->
+                      Clear All Data
+                  </span>
+              </a>
+              </li>
             <li class="nav-item text-center hidden" style="margin-top: 10px;">
                 <a class="nav-link1 text-center" href="#2hrs" onclick='filterDate(7200000)'>
                     <span class="btn bg-primary btn-sm menu-title text-center" style="width: 70px; font-weight: bold; background-color: #c96405 !important; color: #FFFFFF !important;">
@@ -405,34 +421,34 @@ include "../config.php";
                                             </div>
                                         <div class="row mb-3 text-center">
                                             <div class="col-md-12">
-                                                <div class="d-flex justify-content-between traffic-status text-center">
-                                                    <div class="item text-center" style="min-width: 70px; border: 2px #0c8446 solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
+                                                <div class="d-flex justify-content-between traffic-status text-center" style="width: 90%; margin-left: 1%;">
+                                                    <div class="item text-center" style="width: 12%; margin-left: 13%; border: 6px #0c8446 solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
                                                         <h4 class="mb-">All</h4>
                                                         <h3 class="font-weight-bold mb-0 text-center" id="countAll">-</h3>
                                                         <div class="color-border text-center" style="background-color: #0c8446; width: 100%;"></div>
                                                     </div>
-                                                    <div class="item text-center" style="min-width: 70px; border: 2px #ec6c11 solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
+                                                    <div class="item text-center" style="width: 12%; margin-left: -70px; border: 6px #ec6c11 solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
                                                         <h4 class="mb-">Male</h4>
                                                         <h3 class="font-weight-bold mb-0 text-center" id="countMale">-</h3>
                                                         <div class="color-border text-center" style="background-color: #ec6c11; width: 100%;"></div>
                                                     </div>
-                                                    <div class="item text-center" style="min-width: 70px; border: 2px #b6047e solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
+                                                    <div class="item text-center" style="width: 12%; margin-left: -70px; border: 6px #b6047e solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
                                                         <h4 class="mb-">Female</h4>
                                                         <h3 class="font-weight-bold mb-0 text-center" id="countFemale">-</h3>
                                                         <div class="color-border text-center" style="background-color: #b6047e; width: 100%;"></div>
                                                     </div>
-                                                    <div class="item text-center" style="min-width: 70px; border: 2px #e0d12e solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
-                                                        <h4 class="mb-">With Packages</h4>
+                                                    <div class="item text-center" style="width: 12%; margin-left: -70px; border: 6px #e0d12e solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
+                                                        <h4 class="mb-">Waiting</h4>
                                                         <h3 class="font-weight-bold mb-0 text-center" id="countWithPackages">-</h3>
                                                         <div class="color-border text-center" style="background-color: #e0d12e; width: 100%;"></div>
                                                     </div>
-                                                    <div class="item text-center" style="min-width: 70px; border: 2px #b2000e solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
-                                                        <h4 class="mb-">No of Packages</h4>
+                                                    <div class="item text-center" style="width: 12%; margin-left: -70px; border: 6px #b2000e solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
+                                                        <h4 style="font-size: 12px; height: 20px;" class="mb-">No of Packages</h4>
                                                         <h3 class="font-weight-bold mb-0 text-center" id="countPackages">-</h3>
                                                         <div class="color-border text-center" style="background-color: #b2000e; width: 100%;"></div>
                                                     </div>
-                                                    <div class="item text-center" style="min-width: 70px; border: 2px #1767d2 solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
-                                                        <h4 class="mb-">Face Recognized</h4>
+                                                    <div class="item text-center" style="width: 12%; margin-left: -70px; margin-right: 20px; border: 6px #1767d2 solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
+                                                        <h4 style="font-size: 12px; height: 20px;" class="mb-">Face Recognized</h4>
                                                         <h3 class="font-weight-bold mb-0 text-center" id="countIsRecognized">-</h3>
                                                         <div class="color-border text-center" style="background-color: #1767d2; width: 100%;"></div>
                                                     </div>
@@ -507,40 +523,62 @@ include "../config.php";
                                                 <canvas id="chartPie1"></canvas>
                                             </div>
                                         </div>
-                                        <div class="row mb-3 text-center">
+                                        <div class="row mb-3 text-center hidden">
                                             <div class="col-md-12">
                                                 <div class="d-flex justify-content-between traffic-status text-center">
-                                                    <div class="item text-center" style="min-width: 70px; border: 2px #0c8446 solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
+                                                    <div class="item text-center" style="min-width: 70px; border: 6px #0c8446 solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
                                                         <h4 class="mb-">All</h4>
                                                         <h3 class="font-weight-bold mb-0 text-center" id="countAllPrisoners">-</h3>
                                                         <div class="color-border text-center" style="background-color: #0c8446; width: 100%;"></div>
                                                     </div>
-                                                    <div class="item text-center" style="min-width: 70px; border: 2px #ec6c11 solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
+                                                    <div class="item text-center" style="min-width: 70px; border: 6px #ec6c11 solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
                                                         <h4 class="mb-">Male</h4>
                                                         <h3 class="font-weight-bold mb-0 text-center" id="countMalePrisoners">-</h3>
                                                         <div class="color-border text-center" style="background-color: #ec6c11; width: 100%;"></div>
                                                     </div>
-                                                    <div class="item text-center" style="min-width: 70px; border: 2px #b6047e solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
+                                                    <div class="item text-center" style="min-width: 70px; border: 6px #b6047e solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
                                                         <h4 class="mb-">Female</h4>
                                                         <h3 class="font-weight-bold mb-0 text-center" id="countFemalePrisoners">-</h3>
                                                         <div class="color-border text-center" style="background-color: #b6047e; width: 100%;"></div>
                                                     </div>
-                                                    <div class="item text-center" style="min-width: 70px; border: 2px #e0d12e solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
+                                                    <div class="item text-center hidden" style="min-width: 70px; border: 6px #e0d12e solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
                                                         <h4 class="mb-">With Packages</h4>
                                                         <h3 class="font-weight-bold mb-0 text-center" id="countWithPackagesPrisoners">-</h3>
                                                         <div class="color-border text-center" style="background-color: #e0d12e; width: 100%;"></div>
                                                     </div>
-                                                    <div class="item text-center" style="min-width: 70px; border: 2px #b2000e solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
+                                                    <div class="item text-center hidden" style="min-width: 70px; border: 6px #b2000e solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
                                                         <h4 class="mb-">No of Packages</h4>
                                                         <h3 class="font-weight-bold mb-0 text-center" id="countPackagesPrisoners">-</h3>
                                                         <div class="color-border text-center" style="background-color: #b2000e; width: 100%;"></div>
                                                     </div>
-                                                    <div class="item text-center" style="min-width: 70px; border: 2px #1767d2 solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
+                                                    <div class="item text-center" style="min-width: 70px; border: 6px #1767d2 solid; background-color: #FFFFFF; color: #000000; border-radius: 10px;">
                                                         <h4 class="mb-">Is Imprizoned</h4>
                                                         <h3 class="font-weight-bold mb-0 text-center" id="countIsImprisonedPrisoners">-</h3>
                                                         <div class="color-border text-center" style="background-color: #1767d2; width: 100%;"></div>
                                                     </div>
                                                 </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-xl-12 grid-margin stretch-card">
+                        <div class="row w-100 flex-grow">
+                            <div class="col-md-12 grid-margin stretch-card">
+                                <div class="card" id="GraphPrisoners">
+                                    <div class="card-body">
+                                    <h2 class="card-title1 text-center" style="font-size: 30px; padding-top: 20px; padding-bottom: 20px; background-color: #06579a; color: #FFFFFF;">DECISION ACCURACY GRAPH <span class="hidden" style="font-size: 16px; color: #06579a; padding: 2px; border-radius: 10px; border: 2px solid #FFFFFF; background-color: #FFFFFF;">AI Prison Management System</span></h2>
+                                    <p class="text-muted"></p>
+                                        <br>
+                                        <div id="GraphCard">
+                                        <div class="row">
+                                            <div id="chartLine2Div" class="col-md-12">
+                                                <canvas id="chartLine2"></canvas>
                                             </div>
                                         </div>
                                         </div>
@@ -592,6 +630,23 @@ include "../config.php";
 <script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-storage.js"></script>
 <script src="../js/database.js"></script>
 <script src="../js/dashboard.js"></script>
+
+<script>
+
+        function clearAllData() {
+
+            var isConfirmed = confirm("Are you sure you want to delete all Data? This process can not be undone !!!");
+
+            if(isConfirmed) {
+                database.ref('Visits').set("");
+                database.ref('Prisoners').set("");
+                database.ref('Data-Entry-Packages').set("");
+                database.ref('Face-Recognition-WebCAM').set("");
+            }
+
+        }
+
+</script>
 
 </body>
 </html>

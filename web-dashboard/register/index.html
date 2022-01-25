@@ -563,7 +563,7 @@ $("#form-register").on('submit', function(event){
     visit_data["gender"] = gender;
     visit_data["location"] = location;
     visit_data["prisoner"] = prisoner;
-    visit_data["packages"] = packages;
+    visit_data["packages"] = packages.length;
     visit_data["packagesList"] = packagesList;
     visit_data["packagesOther"] = packagesOther;
     visit_data["packagesMoney"] = packagesMoney;
@@ -571,7 +571,7 @@ $("#form-register").on('submit', function(event){
     visit_data["percentage"] = percentage;
     visit_data["isRecognized"] = isRecognized;
 
-    database.ref('Visits').child(id).set(visit_data);
+    // database.ref('Visits').child(id).set(visit_data);
     database.ref('Data-Entry-Packages').set(visit_data);
 
     setTimeout(function() {
@@ -643,6 +643,8 @@ database.ref('Face-Recognition-WebCAM').on('value', function(snapshot) {
     isRecognized = childData.isRecognized;
 
     if(isRecognized) {
+
+        percentage = childData.percentage;
 
         $("#id").attr('disabled', true);
         $("#name").attr('disabled', true);
