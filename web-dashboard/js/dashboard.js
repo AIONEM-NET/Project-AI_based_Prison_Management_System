@@ -95,6 +95,7 @@ function getData(status, keyword, timeFrom, timeTo) {
 
     var t = 0;
     var i = 0;
+    var g = 0;
 
     var countAll = 0;
     var countMale = 0;
@@ -181,8 +182,9 @@ function getData(status, keyword, timeFrom, timeTo) {
           }
           if(childData.isRecognized !== null && childData.isRecognized == true) {
             countIsRecognized++;
-            dataGraphY[i-1] = i;
-            dataGraph[i-1] = (childData.percentage != null && (""+childData.percentage).length > 0 ? childData.percentage : 0);
+            g++;
+            dataGraphY[g-1] = i;
+            dataGraph[g-1] = (childData.percentage != null && (""+childData.percentage).length > 0 ? childData.percentage : 0);
           }
 
           html += '<td class="text-center"><img style="height: 70px; width: 70px;" src="'+(childData.photo != null && (""+childData.photo).length !== 0 ? childData.photo : "../images/test.jpg")+'"></td>';
@@ -195,6 +197,8 @@ function getData(status, keyword, timeFrom, timeTo) {
           html += '<td class="text-center">'+(childData.time != null && (""+childData.time).length !== 0 ? new Date(childData.time).toString().substring(0, 21) : "-")+'</td>';
           html += '<td class="text-center">'+(childData.packages != null && (""+childData.packages) !== 0 ? (childData.packages > 0 ? childData.packages : 1) : "-")+'</td>';
           html += '<td class="text-center" id="visit-status-'+childKey+'" onclick1="visitStatus(\''+childKey+'\''+', \''+childData.name+'\''+', \''+childData.status+'\')"><div class="text-center status-'+((childData.status != null && childData.status == 'done') ? "completed" : "waiting")+'">'+((childData.status != null && childData.status == 'done') ? "LEFT" : "WAITING")+'</div></td>';
+          html += '<td class="text-center">'+(childData.id != null && (""+childData.id).length !== 0 ? childData.id : "-")+'</td>';
+          html += '<td class="text-center">'+(childData.packagesList != null && (""+childData.packagesList).length !== 0 ? childData.packagesList.replace("\n", "<br>") : "-")+'</td>';
 
           html += "</tr>";
 
@@ -259,6 +263,12 @@ function getData(status, keyword, timeFrom, timeTo) {
             '                                            </th>\n' +
             '                                            <th class="text-center font-weight-bold">\n' +
             '                                                STATUS\n' +
+            '                                            </th>\n' +
+            '                                            <th class="text-center font-weight-bold">\n' +
+            '                                                IDENTITY\n' +
+            '                                            </th>\n' +
+            '                                            <th class="text-center font-weight-bold">\n' +
+            '                                                PACKAGES LIST\n' +
             '                                            </th>\n' +
             '                                        </tr>\n' +
             '                                        </thead>\n' +
@@ -537,6 +547,7 @@ function getData(status, keyword, timeFrom, timeTo) {
           html += '<td class="text-center">'+(childData.name != null && (""+childData.name).length !== 0 ? childData.name : "-")+'</td>';
           html += '<td class="text-center">'+(childData.gender != null && (""+childData.gender).length !== 0 ? childData.gender : "-")+'</td>';
           html += '<td class="text-center">'+(childData.location != null && (""+childData.location).length !== 0 ? childData.location : "-")+'</td>';
+          html += '<td class="text-center">'+(childData.parent != null && (""+childData.parent).length !== 0 ? childData.parent : "-")+'</td>';
           html += '<td class="text-center">'+(childData.time != null && (""+childData.time).length !== 0 ? new Date(childData.time).toString().substring(0, 21) : "-")+'</td>';
           // html += '<td class="text-center">'+(childData.packages != null && (""+childData.packages) !== 0 ? (childData.packages > 0 ? childData.packages : 1) : "-")+'</td>';
           html += '<td class="text-center" id="check-prisoner-'+childKey+'" onclick="checkPrisoner(\''+childKey+'\''+', \''+childData.name+'\''+', \''+childData.isImprisoned+'\')"><div class="text-center imprisoned-'+((childData.isImprisoned != null && childData.isImprisoned == true) ? "yes" : "no")+'">'+((childData.isImprisoned != null && childData.isImprisoned == true) ? "YES" : "NO")+'</div></td>';
@@ -584,6 +595,9 @@ function getData(status, keyword, timeFrom, timeTo) {
             '                                            </th>\n' +
             '                                            <th class="text-center font-weight-bold">\n' +
             '                                                LOCATION\n' +
+            '                                            </th>\n' +
+            '                                            <th class="text-center font-weight-bold">\n' +
+            '                                                PARENT\n' +
             '                                            </th>\n' +
             '                                            <th class="text-center font-weight-bold">\n' +
             '                                                DATE\n' +
