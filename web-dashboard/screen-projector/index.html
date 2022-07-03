@@ -268,7 +268,7 @@ include "../config.php";
                                 START
                             </div>
                             <div id="countTimer" class="text-center" style="position: absolute; padding-top: 35px; margin-left: calc(100% - 240px); border-radius: 50%; width: 200px; height: 200px; background-color: #067628; color: #FFFFFF; font-size: 50px;">
-                                5 Min <br> 00 Sec
+                                1 Min <br> 00 Sec
                             </div>
                         </div>
 
@@ -403,12 +403,16 @@ include "../config.php";
 
 $("#TableCard").addClass("is-loading");
 
-var counterStartTime = 0;
+// Configuration
+var counterMin = 0.5;
+var maxVisitors = 3;
+
 var counterStarted = false;
-var counterMin = 1;
+var counterStartTime = 0;
+
 var functionInterval;
 
-$('#countTimer').html(1+" Min" +"<br>"+ "00 Sec");
+$('#countTimer').html(0+" Min" +"<br>"+ "30 Sec");
 
 function counterStartStop() {
 
@@ -515,8 +519,6 @@ var isDataTable = true;
   var htmlAll = "";
   var htmlAllPrisoners = "";
   var max = 1000;
-
-  var maxVisitors = 5;
 
   $("#countVisitors").html("-/"+maxVisitors)
 
